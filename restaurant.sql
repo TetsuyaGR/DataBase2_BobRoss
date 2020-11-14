@@ -1,3 +1,11 @@
+DROP TABLE IF EXISTS 
+  katalogos,
+  paraggelia,
+  receipt,
+  trapezi,
+  servitoros,
+  log_file;
+
 
 CREATE TABLE katalogos(
   kid INTEGER NOT NULL CONSTRAINT C_KID PRIMARY KEY,
