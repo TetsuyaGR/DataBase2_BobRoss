@@ -76,3 +76,43 @@ INSERT INTO trapezi VALUES (3, 1, true);
 INSERT INTO trapezi VALUES (4, 6, false);
 INSERT INTO trapezi VALUES (5, 2, true);
 INSERT INTO trapezi VALUES (6, 4, false);
+
+-- Τραπέζια που σερβίρει ο σερβιτορος x
+select t.tid from trapezi t 
+join receipt r on (r.rid=t.receiptID)
+where r.servitorosID=2;
+ 
+ -- Τι χρωστάει το τραπέζι x
+ SELECT SUM(price*amount) FROM receipt r
+  JOIN trapezi t ON t.receiptID=r.rid
+  join paraggelia p on p.receiptID=r.rid
+  JOIN katalogos kat ON kat.kid=p.katalogosid
+  WHERE t.tid=2;
+  
+-- Ποσα x category εχει παρει το τραπεζι y
+ SELECT COUNT(*) FROM receipt r
+  JOIN paraggelia p ON p.receiptid=r.rid
+  JOIN trapezi t ON t.receiptID=r.rid
+  JOIN katalogos kat ON kat.kid=p.katalogosid
+  WHERE t.tid=1 AND category='Κυριος';
+  
+-- Ποια τραπεζια εχουν παρει x
+SELECT DISTINCT t.tid FROM trapezi t
+  JOIN receipt r ON r.rid=t.receiptid
+  JOIN paraggelia p ON p.receiptid=r.rid
+  JOIN katalogos kat ON kat.kid=p.katalogosid
+  WHERE kat.konoma='μπριζολα';
+  
+-- Ποια τραπεζια ειναι ελευθερα
+SELECT t.tid FROM trapezi t
+ WHERE t.receiptid IS NULL;
+    
+-- Ποιες παραγγελιες εχουν λογαριασμο πανω απο x ευρώ
+
+-- Ταμειο ημερας
+
+-- Ποσες μεριδες εχουν μεινει απο το x φαγητο
+
+-- Ολα τα γευματα για το x category
+
+-- Ποια φαγητα δεν ειναι διαθεσημα
