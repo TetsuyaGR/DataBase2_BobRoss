@@ -56,6 +56,8 @@ CREATE TABLE trapezi (
 
 $$ LANGUAGE SQL;
 
+								 
+								 
 ---log file
 
 create table log_file(
@@ -102,6 +104,8 @@ CREATE TRIGGER log_file
 AFTER INSERT OR UPDATE OR DELETE ON trapezi
 FOR EACH ROW EXECUTE PROCEDURE process_log_file();
 
+								 
+								 
 --- insert function
 
 CREATE FUNCTION insertdb()
@@ -109,8 +113,8 @@ returns void as
 $$
 
 INSERT INTO katalogos VALUES (1, 'τουρτα', 7.5, 20, 'Επιδορπιο');
-INSERT INTO katalogos VALUES (2, 'μουσακας', 6.9000001, 0, 'Κυριος');
-INSERT INTO katalogos VALUES (3, 'σουβλακια', 6.19999981, 35, 'Κυριος');
+INSERT INTO katalogos VALUES (2, 'μουσακας', 6.5, 0, 'Κυριος');
+INSERT INTO katalogos VALUES (3, 'σουβλακια', 5.5, 35, 'Κυριος');
 INSERT INTO katalogos VALUES (4, 'μπριζολα', 9, 32, 'Κυριος');
 INSERT INTO katalogos VALUES (5, 'πατατες', 2.5, 40, 'Ορεκτικο');
 INSERT INTO katalogos VALUES (6, 'χωριατικη', 2.5, 40, 'Σαλατα');
@@ -251,7 +255,7 @@ select * from getNotDiathesimaFaghta();
 -- Ταμειο ημερας
 
 create or replace function getTameioHmeras() returns float as $$
-	select SUM(kat.price*p.amount) as logariasmos from paraggelia p 
+	select SUM(kat.price*p.amount) as tameiohmeras from paraggelia p 
 	join receipt r on p.receiptID=r.rid 
 	join katalogos kat ON kat.kid=p.katalogosid;
 $$ language sql;
