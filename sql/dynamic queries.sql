@@ -99,5 +99,14 @@ select * from getNotDiathesimaFaghta();
 
 -- Ταμειο ημερας
 
+create or replace function getTameioHmeras() returns float as $$
+	select SUM(kat.price*p.amount) as logariasmos from paraggelia p 
+	join receipt r on p.receiptID=r.rid 
+	join katalogos kat ON kat.kid=p.katalogosid;
+$$ language sql;
+
+select * from getTameioHmeras();
+	
 
 -- Ποσες μεριδες εχουν μεινει απο το x φαγητο
+fml
