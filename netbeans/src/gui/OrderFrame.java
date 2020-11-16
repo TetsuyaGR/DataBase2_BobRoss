@@ -7,6 +7,7 @@
 package gui;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 /**
@@ -18,9 +19,20 @@ public class OrderFrame extends javax.swing.JFrame {
     /**
      * Creates new form OrderFrame
      */
-    public OrderFrame() {
+    // TODO: Replace JLabel with Restaurant Table class when created
+    public OrderFrame(JLabel table) {
         initComponents();
+        if(table == null)
+            return;
+        TableNumber.setText("Table " + table.getText());
     }
+    
+    public OrderFrame() {
+        this(null);
+    }
+    
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -100,7 +112,7 @@ public class OrderFrame extends javax.swing.JFrame {
                 .addGap(24, 24, 24))
         );
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setLocation(new java.awt.Point(500, 250));
 
         TableNumber.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
