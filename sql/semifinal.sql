@@ -29,7 +29,7 @@ CREATE TABLE katalogos(
   konoma VARCHAR(25),
   price real constraint c_price check (price>0),
   availability INT constraint c_availability check (availability=0 or availability>0),
-  category VARCHAR(25) constraint c_category check (category in ('Κυριος','Ορεκτικο','Επιδορπιο','Σαλατα','Αναψυκτικο','Κρασι','Μπυρα')),
+  category VARCHAR(25) constraint c_category check (category in ('Κυ�?ιος','Ο�?εκτικο','Επιδο�?πιο','Σαλατα','Αναψυκτικο','Κ�?ασι','Μπυ�?α')),
   constraint c_kid PRIMARY KEY(kid)
 );
 
@@ -97,9 +97,9 @@ for each row
 execute procedure updateamount();
 $$ LANGUAGE SQL;
 
---Καθε φορα που περναμε μια παραγγελια, θα μειωνει τη διαθεσημοτητα του προιόντος
---χρειαζεται trigger ετσι ωστε οταν γινεται insert μιας παραγγελιας να γινεται
---αφαιρεση των τεμαχιων των φαγητων απο τον καταλογο
+--Καθε φο�?α που πε�?ναμε μια πα�?αγγελια, θα μειωνει τη διαθεσημοτητα του π�?οιόντος
+--χ�?ειαζεται trigger ετσι ωστε οταν γινεται insert μιας πα�?αγγελιας να γινεται
+--αφαι�?εση των τεμαχιων των φαγητων απο τον καταλογο
 
 create or replace function updateamount() returns trigger as $$
 begin 
@@ -135,12 +135,12 @@ CREATE FUNCTION insertdb()
 returns void as 
 $$
 BEGIN
-INSERT INTO katalogos(konoma, price, availability, category) VALUES ('τουρτα', 7.5, 20, 'Επιδορπιο');
-INSERT INTO katalogos(konoma, price, availability, category) VALUES ('μουσακας', 6.5, 0, 'Κυριος');
-INSERT INTO katalogos(konoma, price, availability, category) VALUES ('σουβλακια', 5.5, 35, 'Κυριος');
-INSERT INTO katalogos(konoma, price, availability, category) VALUES ('μπριζολα', 9, 32, 'Κυριος');
-INSERT INTO katalogos(konoma, price, availability, category) VALUES ('πατατες', 2.5, 40, 'Ορεκτικο');
-INSERT INTO katalogos(konoma, price, availability, category) VALUES ('χωριατικη', 2.5, 40, 'Σαλατα');
+INSERT INTO katalogos(konoma, price, availability, category) VALUES ('του�?τα', 7.5, 20, 'Επιδο�?πιο');
+INSERT INTO katalogos(konoma, price, availability, category) VALUES ('μουσακας', 6.5, 0, 'Κυ�?ιος');
+INSERT INTO katalogos(konoma, price, availability, category) VALUES ('σουβλακια', 5.5, 35, 'Κυ�?ιος');
+INSERT INTO katalogos(konoma, price, availability, category) VALUES ('μπ�?ιζολα', 9, 32, 'Κυ�?ιος');
+INSERT INTO katalogos(konoma, price, availability, category) VALUES ('πατατες', 2.5, 40, 'Ο�?εκτικο');
+INSERT INTO katalogos(konoma, price, availability, category) VALUES ('χω�?ιατικη', 2.5, 40, 'Σαλατα');
    
 INSERT INTO servitoros(onoma) VALUES ('Θανος');
 INSERT INTO servitoros(onoma) VALUES ('Σοφια');
@@ -182,7 +182,7 @@ $$ LANGUAGE plpgsql;
 ---dynamic queries
 
 
--- Τραπέζια που σερβίρει ο σερβιτορος x
+-- Τ�?απέζια που σε�?βί�?ει ο σε�?βιτο�?ος x
 
 create or replace function getTrapezia(int) returns 
 setof int as $$
@@ -194,7 +194,7 @@ setof int as $$
 $$ language plpgsql;
 
 
--- Τι χρωστάει το τραπέζι x
+-- Τι χ�?ωστάει το τ�?απέζι x
 
 create or replace function getLogariasmo(float) returns float as $$
   begin
@@ -206,7 +206,7 @@ create or replace function getLogariasmo(float) returns float as $$
   end
 $$ language plpgsql;
 
--- Ποσα x category εχει παρει το τραπεζι y
+-- Ποσα x category εχει πα�?ει το τ�?απεζι y
 
  create or replace function getPosothta(bigint,varchar) returns 
  setof bigint as 
@@ -221,7 +221,7 @@ $$ language plpgsql;
 $$ language plpgsql;
 
   
--- Ποια τραπεζια εχουν παρει την x επιλογη απο τον καταλογο
+-- Ποια τ�?απεζια εχουν πα�?ει την x επιλογη απο τον καταλογο
 
 create or replace function getEpilogh(varchar) returns 
 setof int as $$
@@ -234,7 +234,7 @@ setof int as $$
     end
 $$ language plpgsql;
 
--- Ποια τραπεζια ειναι ελευθερα
+-- Ποια τ�?απεζια ειναι ελευθε�?α
 
 create or replace function getDiathesima() returns 
 setof int as $$
@@ -244,7 +244,7 @@ setof int as $$
     end
  $$ language plpgsql;
 
- -- Ποιες παραγγελιες εχουν λογαριασμο πανω απο x ευρώ
+ -- Ποιες πα�?αγγελιες εχουν λογα�?ιασμο πανω απο x ευ�?ώ
 
 create or replace function getposo(float) returns
 setof int as $$
@@ -280,7 +280,7 @@ setof varchar as $$
  $$ language plpgsql;
 
 
--- Ταμειο ημερας
+-- Ταμειο ημε�?ας
 
 create or replace function getTameioHmeras() returns float as $$
     begin
@@ -290,7 +290,7 @@ create or replace function getTameioHmeras() returns float as $$
     end
 $$ language plpgsql;
 
--- Ποσες μεριδες εχουν μεινει απο το x φαγητο
+-- Ποσες με�?ιδες εχουν μεινει απο το x φαγητο
 
 create or replace function getMerides(int) returns int as $$
 	begin

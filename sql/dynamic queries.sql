@@ -1,6 +1,6 @@
 ﻿-- Τραπέζια που σερβίρει ο σερβιτορος x
 
-create or replace function getTrapezia(int) returns 
+create or replace function getTrapeziaFromServitoros(int) returns 
 setof int as $$
 	select distinct t.tid from trapezi t
 	join receipt r on (r.rid=t.receiptID)
