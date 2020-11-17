@@ -22,35 +22,41 @@ returns void as
 $$
 
 CREATE TABLE katalogos(
-  kid INTEGER NOT NULL CONSTRAINT C_KID PRIMARY KEY,
+  kid SERIAL,
   konoma VARCHAR(25),
   price real constraint c_price check (price>0),
   availability INT constraint c_availability check (availability=0 or availability>0),
-  category VARCHAR(25) constraint c_category check (category in ('Κυριος','Ορεκτικο','Επιδορπιο','Σαλατα','Αναψυκτικο','Κρασι','Μπυρα')));
+  category VARCHAR(25) constraint c_category check (category in ('Κυριος','Ορεκτικο','Επιδορπιο','Σαλατα','Αναψυκτικο','Κρασι','Μπυρα')),
+  constraint c_kid PRIMARY KEY(kid)
+);
 
  CREATE TABLE servitoros (
-  sid INT not null constraint c_sid PRIMARY KEY,
-  onoma VARCHAR(50)
+  sid serial,
+  onoma VARCHAR(50),
+  constraint c_sid PRIMARY KEY(sid)
 );                                                                
                                                                  
 CREATE TABLE receipt (
-  rid integer not null constraint c_rid primary key,
+  rid serial,
   dateTime TIMESTAMP,
-  servitorosID INT not null constraint f_key3 references servitoros(sid) 
+  servitorosID INT not null constraint f_key3 references servitoros(sid),
+  constraint c_rid primary key(rid)
 );                                                                
                                                                  
                                                                  
 CREATE TABLE paraggelia(
-  pid integer not null constraint c_pid primary key ,
+  pid serial,
   katalogosID integer not null constraint f_key1 references katalogos(kid) ,
   amount INT,
-  receiptID INT not null constraint f_key2 references receipt(rid)
+  receiptID INT not null constraint f_key2 references receipt(rid),
+  constraint c_pid primary key(pid)	
 );
                                                                  
                                                                  
 CREATE TABLE trapezi (
-  tid INT not null constraint c_tid PRIMARY KEY,
-  receiptID INT constraint f_key references receipt(rid)
+  tid serial,
+  receiptID INT constraint f_key references receipt(rid),
+  constraint c_tid primary key(tid)	
   );
 
 
