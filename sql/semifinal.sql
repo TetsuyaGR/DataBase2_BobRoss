@@ -54,18 +54,18 @@ CREATE TABLE trapezi (
   );
 
 
-$$ LANGUAGE SQL;
-
-								 
-								 
----log file
-
 create table log_file(
 table_name text not null,
 operation char(1) NOT NULL,
 stamp timestamp NOT NULL,
 userid varchar(20) NOT NULL
-);
+);								 
+								 
+$$ LANGUAGE SQL;
+
+								 
+								 
+---log file
 
 CREATE OR REPLACE FUNCTION process_log_file()
 RETURNS TRIGGER AS $$
