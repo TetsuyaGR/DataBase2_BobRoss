@@ -44,8 +44,8 @@ public class DatabaseController {
             ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
                 int tid = rs.getInt("tid");
-                boolean available = rs.getBoolean("available");
-                table = new BobTable(tid, available);
+                int receiptId = rs.getInt("receiptid");
+                table = new BobTable(tid, receiptId);
             }
             stmt.close();
             return table;
@@ -55,17 +55,17 @@ public class DatabaseController {
         return null;
     }
     
-    public HashMap<Integer, Boolean> getAllTrapezia() {
+    public HashMap<Integer, Integer> getAllTrapezia() {
         String query = "SELECT * FROM trapezi";
-        HashMap<Integer, Boolean> table = new HashMap<>();
+        HashMap<Integer, Integer> table = new HashMap<>();
         PreparedStatement stmt = null;
         try {
             stmt = dbConnection.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
                 int tid = rs.getInt("tid");
-                boolean available = rs.getBoolean("available");
-                table.put(tid, available);
+                int receiptId = rs.getInt("receiptId");
+                table.put(tid, receiptId);
             }
             stmt.close();
             return table;

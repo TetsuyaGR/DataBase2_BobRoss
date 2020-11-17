@@ -5,20 +5,20 @@ import javax.swing.JLabel;
 public class BobTable extends JLabel {
     
     private int tableId;
-    private boolean available;
+    private int receiptId;
     
     public BobTable(int id) {
-        this(id, false);
+        this(id, 0);
     }
     
-    public BobTable(int id, boolean available) {
+    public BobTable(int id, int receiptId) {
         this.tableId = id;
-        this.available = available;
+        this.receiptId = receiptId;
     }
     
     public int getTableId() { return this.tableId; }
-    public boolean isAvailable() { return this.available; }
+    public boolean isAvailable() { return (receiptId == 0); }
     
-    public void setAvailable(boolean available) { this.available = available; }
+    public void setReceiptId(int receiptId) { this.receiptId = receiptId; }
 
 }

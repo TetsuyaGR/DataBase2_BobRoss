@@ -46,7 +46,7 @@ public class TablesFrame extends JFrame {
     
     public TablesFrame() {
         List<BobTable> jtables = new ArrayList<>();
-        HashMap<Integer, Boolean> trapezia = null;
+        HashMap<Integer, Integer> trapezia = null;
         Font buttonFont = new Font("Dialog", 0, 14);
         BobMouseHandler mouseHandler = new BobMouseHandler();
         panel = new JPanel();
@@ -61,7 +61,7 @@ public class TablesFrame extends JFrame {
         view.setLayout(new GridLayout(0,6,6,6));
         trapezia = db.getAllTrapezia();
         for(Map.Entry trapezi : trapezia.entrySet()) {
-            BobTable table = new BobTable((int) trapezi.getKey(), (boolean) trapezi.getValue());
+            BobTable table = new BobTable((int) trapezi.getKey(), (int) trapezi.getValue());
             table.setOpaque(true);
             table.setText(String.valueOf(table.getTableId()));
             if(table.isAvailable())
