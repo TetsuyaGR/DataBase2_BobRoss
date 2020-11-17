@@ -267,3 +267,35 @@ create or replace function getTameioHmeras() returns float as $$
 $$ language sql;
 
 select * from getTameioHmeras();
+
+						    
+-- Ποσες μεριδες εχουν μεινει απο το x φαγητο
+
+--χρειαζεται trigger ετσι ωστε οταν γινεται insert μιας παραγγελιας να γινεται
+--αφαιρεση των τεμαχιων των φαγητων απο τον καταλογο
+
+create or replace function updateamount() returns trigger as $$
+declare newamount int;
+begin 
+	newamount := new.amount;
+	update katalogos 
+	set availability=availability-newamount
+	where kid=new.katalogosid;
+	return null;
+end;
+$$ language plpgsql;
+
+create trigger updateamounttrigger
+after insert on paraggelia 
+for each row 
+execute procedure updateamount();
+
+
+-- to actual function tou query
+create or replace function getMerides(int) returns int as $$
+	select k.availability from katalogos k 
+	join paraggelia p on p.katalogosid=p.pid
+	where k.kid=$1;
+$$ language sql;
+
+select * from getMerides(1);						   
