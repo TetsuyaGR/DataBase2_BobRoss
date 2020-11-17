@@ -275,11 +275,10 @@ select * from getTameioHmeras();
 --αφαιρεση των τεμαχιων των φαγητων απο τον καταλογο
 
 create or replace function updateamount() returns trigger as $$
-declare newamount int;
 begin 
-	newamount := new.amount;
+	
 	update katalogos 
-	set availability=availability-newamount
+	set availability=availability-new.amount
 	where kid=new.katalogosid;
 	return null;
 end;
