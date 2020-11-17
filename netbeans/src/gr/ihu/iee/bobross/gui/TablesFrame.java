@@ -1,9 +1,9 @@
-package gui;
+package gr.ihu.iee.bobross.gui;
 
+import gr.ihu.iee.bobross.controller.DatabaseController;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Window;
@@ -11,39 +11,46 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import gr.ihu.iee.bobross.objects.BobTable;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TablesFrame extends JFrame {
-    private int tables = 100;
     private JPanel panel;
-    private JLabel selectedLabel = null;
+    private DatabaseController db;
+    private BobTable selectedLabel = null;
+    private ImageIcon redTableIcon = new ImageIcon(getClass().getResource("/gui/table_red.png"));
+    private ImageIcon greenTableIcon = new ImageIcon(getClass().getResource("/gui/table_green.png"));
     
     private class BobMouseHandler extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent evt) {
-            JLabel label = (JLabel) evt.getSource();
+            BobTable label = (BobTable) evt.getSource();
             if(selectedLabel != null) {
                 selectedLabel.setBackground(null);
-                selectedLabel.setForeground(null);
             }
-            label.setBackground(Color.GREEN);
-            label.setForeground(Color.GREEN);
+            label.setBackground(Color.gray);
             selectedLabel = label;
-            System.out.println(label.getText());
         }
     }
     
     public TablesFrame() {
-        //initComponents();
-        JLabel[] jtables = new JLabel[tables];
+        List<BobTable> jtables = new ArrayList<>();
+        HashMap<Integer, Boolean> trapezia = null;
         Font buttonFont = new Font("Dialog", 0, 14);
         BobMouseHandler mouseHandler = new BobMouseHandler();
         panel = new JPanel();
+        db = new DatabaseController();
         panel.setLayout(new BorderLayout(25,25));
         JScrollPane scrollPane = new JScrollPane(new JPanel());
         panel.setPreferredSize(new Dimension(1280, 800));
@@ -52,25 +59,49 @@ public class TablesFrame extends JFrame {
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         JPanel view = (JPanel) scrollPane.getViewport().getView();
         view.setLayout(new GridLayout(0,6,6,6));
-        for(int i = 0; i < tables;i++) {
-            jtables[i] = new JLabel();
+        trapezia = db.getAllTrapezia();
+        for(Map.Entry trapezi : trapezia.entrySet()) {
+            BobTable table = new BobTable((int) trapezi.getKey(), (boolean) trapezi.getValue());
+            table.setOpaque(true);
+            table.setText(String.valueOf(table.getTableId()));
+            if(table.isAvailable())
+                table.setIcon(greenTableIcon);
+            else
+                table.setIcon(redTableIcon);
+            table.setSize(64, 64);
+            table.setBorder(BorderFactory.createLineBorder(Color.black));
+            table.addMouseListener(mouseHandler);
+            table.setHorizontalAlignment(JLabel.CENTER);
+            table.setHorizontalTextPosition(JLabel.CENTER);
+            table.setVerticalTextPosition(JLabel.TOP);
+            table.setVisible(true);
+            jtables.add(table);
+            view.add(table);
+            view.validate();
+        }
+        /*for(int i = 0; i < tables;i++) {
+            jtables[i] = new BobTable(i);
+            jtables[i].setOpaque(true);
             jtables[i].setText(String.valueOf(i+1));
-            jtables[i].setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/table_red.png")));
+            jtables[i].setIcon(redTableIcon);
             jtables[i].setSize(64, 64);
             jtables[i].setBorder(BorderFactory.createLineBorder(Color.black));
             jtables[i].addMouseListener(mouseHandler);
             jtables[i].setHorizontalAlignment(JButton.CENTER);
             jtables[i].setHorizontalTextPosition(JButton.CENTER);
             jtables[i].setVerticalTextPosition(JButton.TOP);
-            
+            if(i%5==0) {
+                jtables[i].setAvailable(true);
+                jtables[i].setIcon(greenTableIcon);
+            }
             jtables[i].setVisible(true);
             view.add(jtables[i]);
             view.validate();
-        }
+        }*/
         JLabel availableTables = new JLabel();
         availableTables.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         availableTables.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        availableTables.setText("Available Tables");
+        availableTables.setText("BobRoss Restaurant Tables");
         availableTables.setBorder(BorderFactory.createEmptyBorder(50, 0, 0, 0));
         JButton orderButton = new JButton();
         orderButton.setFont(buttonFont);
@@ -105,8 +136,7 @@ public class TablesFrame extends JFrame {
         panel.add(buttonContainer, BorderLayout.SOUTH);
         panel.setVisible(true);
         
-        initComponents();
-        //System.out.println(view.getPreferredSize().height + ", " + view.getPreferredSize().width);
+        initFrame();
     }
     
     private void PayButtonActionPerformed(ActionEvent evt) {
@@ -117,7 +147,7 @@ public class TablesFrame extends JFrame {
         new OrderFrame(selectedLabel).setVisible(true);
     }
     
-    private void initComponents() {
+    private void initFrame() {
         add(panel);
         setTitle("BobRoss Restaurant GUI");
         //setLocation(new java.awt.Point(500, 250));
@@ -125,6 +155,12 @@ public class TablesFrame extends JFrame {
         centreWindow(this);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent winEvt) {
+                db.close();
+                System.exit(0);
+            }
+        });
     }
     
     public static void centreWindow(Window frame) {
@@ -132,38 +168,5 @@ public class TablesFrame extends JFrame {
         int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
         int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
         frame.setLocation(x, y);
-    }
-    
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TablesFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TablesFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TablesFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TablesFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new TablesFrame().setVisible(true);
-            }
-        });
     }
 }
