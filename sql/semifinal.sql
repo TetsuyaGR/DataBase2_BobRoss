@@ -1,5 +1,5 @@
 --- drop function
-drop function if exists creatdb();
+drop function if exists createdb();
 drop function if exists dropdb();
 drop function if exists insertdb();
 
@@ -20,7 +20,7 @@ $$ LANGUAGE SQL;
 
 --- create function
 
-CREATE FUNCTION creatdb()
+CREATE FUNCTION createdb()
 returns void as 
 $$
 
@@ -29,7 +29,7 @@ CREATE TABLE katalogos(
   konoma VARCHAR(25),
   price real constraint c_price check (price>0),
   availability INT constraint c_availability check (availability=0 or availability>0),
-  category VARCHAR(25) constraint c_category check (category in ('Κυριος','Ορεκτικο','Επιδορπιο','Σαλατα','Αναψυκτικο','Κρασι','Μπυρα')),
+  category VARCHAR(25),
   constraint c_kid PRIMARY KEY(kid)
 );
 
@@ -135,12 +135,12 @@ CREATE FUNCTION insertdb()
 returns void as 
 $$
 BEGIN
-INSERT INTO katalogos(konoma, price, availability, category) VALUES ('τουρτα', 7.5, 20, 'Επιδορπιο');
-INSERT INTO katalogos(konoma, price, availability, category) VALUES ('μουσακας', 6.5, 0, 'Κυριος');
-INSERT INTO katalogos(konoma, price, availability, category) VALUES ('σουβλακια', 5.5, 35, 'Κυριος');
-INSERT INTO katalogos(konoma, price, availability, category) VALUES ('μπριζολα', 9, 32, 'Κυριος');
-INSERT INTO katalogos(konoma, price, availability, category) VALUES ('πατατες', 2.5, 40, 'Ορεκτικο');
-INSERT INTO katalogos(konoma, price, availability, category) VALUES ('χωριατικη', 2.5, 40, 'Σαλατα');
+INSERT INTO katalogos(konoma, price, availability, category) VALUES ('τουρτα', 7.5, 20, 'Επιδόρπια');
+INSERT INTO katalogos(konoma, price, availability, category) VALUES ('μουσακας', 6.5, 0, 'Κυρίως πιάτα');
+INSERT INTO katalogos(konoma, price, availability, category) VALUES ('σουβλακια', 5.5, 35, 'Κυρίως πιάτα');
+INSERT INTO katalogos(konoma, price, availability, category) VALUES ('μπριζολα', 9, 32, 'Κυρίως πιάτα');
+INSERT INTO katalogos(konoma, price, availability, category) VALUES ('πατατες', 2.5, 40, 'Ορεκτικά');
+INSERT INTO katalogos(konoma, price, availability, category) VALUES ('χωριατικη', 2.5, 40, 'Σαλάτες');
    
 INSERT INTO servitoros(onoma) VALUES ('Θανος');
 INSERT INTO servitoros(onoma) VALUES ('Σοφια');
@@ -181,121 +181,104 @@ $$ LANGUAGE plpgsql;
 
 ---dynamic queries
 
+select dropdb();
+select createdb();
+select insertdb();
 
 -- Τραπέζια που σερβίρει ο σερβιτορος x
 
 create or replace function getTrapezia(int) returns 
 setof int as $$
-	begin
 	select distinct t.tid from trapezi t
 	join receipt r on (r.rid=t.receiptID)
 	where r.servitorosID=$1;
-	end
-$$ language plpgsql;
+$$ language sql;
 
 
 -- Τι χρωστάει το τραπέζι x
 
 create or replace function getLogariasmo(float) returns float as $$
-  begin
   select SUM(price*amount) FROM receipt r
   JOIN trapezi t ON t.receiptID=r.rid
   join paraggelia p on p.receiptID=r.rid
   JOIN katalogos kat ON kat.kid=p.katalogosid
   WHERE t.tid=$1;
-  end
-$$ language plpgsql;
+$$ language sql;
 
 -- Ποσα x category εχει παρει το τραπεζι y
 
  create or replace function getPosothta(bigint,varchar) returns 
  setof bigint as 
  $$
-  begin
   SELECT COUNT(*) FROM receipt r
   JOIN paraggelia p ON p.receiptid=r.rid
   JOIN trapezi t ON t.receiptID=r.rid
   JOIN katalogos kat ON kat.kid=p.katalogosid
   WHERE t.tid=$1 AND category=$2;
-  end
-$$ language plpgsql;
+$$ language sql;
 
   
 -- Ποια τραπεζια εχουν παρει την x επιλογη απο τον καταλογο
 
 create or replace function getEpilogh(varchar) returns 
 setof int as $$
-    begin
 	SELECT DISTINCT t.tid FROM trapezi t
 	JOIN receipt r ON r.rid=t.receiptid
 	JOIN paraggelia p ON p.receiptid=r.rid
 	JOIN katalogos kat ON kat.kid=p.katalogosid
 	WHERE kat.konoma=$1;
-    end
-$$ language plpgsql;
+$$ language sql;
 
 -- Ποια τραπεζια ειναι ελευθερα
 
 create or replace function getDiathesima() returns 
 setof int as $$
-    begin
 	SELECT t.tid FROM trapezi t
 	WHERE t.receiptid IS NULL;
-    end
- $$ language plpgsql;
+ $$ language sql;
 
  -- Ποιες παραγγελιες εχουν λογαριασμο πανω απο x ευρώ
 
 create or replace function getposo(float) returns
 setof int as $$
-    begin
 	select p.pid from paraggelia p
 	join  receipt r on p.receiptID=r.rid 
 	join katalogos kat ON kat.kid=p.katalogosid
 	group by p.pid
 	having SUM(kat.price*p.amount)>$1;
-    end
-$$ language plpgsql;
+$$ language sql;
 
 
 -- Ολα τα γευματα για το x category
 
 create or replace function getGeumata(varchar) returns 
 setof varchar as $$
-    begin
 	select konoma from katalogos k
 	where k.category=$1;
-    end
-$$ language plpgsql;
+$$ language sql;
 
 
 -- Ποια φαγητα δεν ειναι διαθεσημα
 
 create or replace function getNotDiathesimaFaghta() returns 
 setof varchar as $$
-    begin
 	SELECT k.konoma FROM katalogos k
 	WHERE k.availability=0;
-    end
- $$ language plpgsql;
+ $$ language sql;
 
 
 -- Ταμειο ημερας
 
 create or replace function getTameioHmeras() returns float as $$
-    begin
 	select SUM(kat.price*p.amount) as tameiohmeras from paraggelia p 
 	join receipt r on p.receiptID=r.rid 
 	join katalogos kat ON kat.kid=p.katalogosid;
-    end
-$$ language plpgsql;
+$$ language sql;
 
 -- Ποσες μεριδες εχουν μεινει απο το x φαγητο
 
 create or replace function getMerides(int) returns int as $$
-	begin
 	select k.availability from katalogos k 
 	join paraggelia p on p.katalogosid=p.pid
 	where k.kid=$1;
-    end
-$$ language plpgsql;
+$$ language sql;
