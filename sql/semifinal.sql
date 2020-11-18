@@ -52,6 +52,7 @@ CREATE TABLE paraggelia(
   katalogosID integer not null constraint f_key1 references katalogos(kid) ,
   amount INT,
   receiptID INT not null constraint f_key2 references receipt(rid),
+  sxolio varchar(100),
   constraint c_pid primary key(pid)	
 );
                                                                  
@@ -176,6 +177,33 @@ INSERT INTO trapezi(receiptid) VALUES (null);
 INSERT INTO trapezi(receiptid) VALUES (null);
 INSERT INTO trapezi(receiptid) VALUES (null);
 INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
+INSERT INTO trapezi(receiptid) VALUES (null);
 END
 $$ LANGUAGE plpgsql;
 
@@ -184,6 +212,31 @@ $$ LANGUAGE plpgsql;
 select dropdb();
 select createdb();
 select insertdb();
+
+create or replace function putTrapezi(int)
+returns void as $$
+  insert into trapezi(receiptid) values ($1);
+$$ language sql;
+
+create or replace function putParaggelia(int, int, int)
+returns void as $$
+  insert into paraggelia(katalogosID, amount, receiptID) values ($1, $2, $3);
+$$ language sql;
+
+create or replace function putReceipt(int)
+returns void as $$
+  insert into receipt(dateTime, servitorosID) values (NOW(), $1);
+$$ language sql;
+
+create or replace function putServitoros(varchar)
+returns void as $$
+  insert into servitoros(onoma) values ($1);
+$$ language sql;
+
+create or replace function putKatalogos(varchar, real, int, varchar)
+returns void as $$
+  insert into katalogos(konoma, price, availability, category) values ($1, $2, $3, $4);
+$$ language sql;
 
 -- Τραπέζια που σερβίρει ο σερβιτορος x
 
