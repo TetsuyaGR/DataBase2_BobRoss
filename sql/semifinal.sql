@@ -26,10 +26,10 @@ $$
 
 CREATE TABLE katalogos(
   kid SERIAL,
-  konoma VARCHAR(25),
+  konoma VARCHAR(100),
   price float constraint c_price check (price>0),
   availability INT constraint c_availability check (availability=0 or availability>0),
-  category VARCHAR(25),
+  category VARCHAR(50),
   constraint c_kid PRIMARY KEY(kid)
 );
 
