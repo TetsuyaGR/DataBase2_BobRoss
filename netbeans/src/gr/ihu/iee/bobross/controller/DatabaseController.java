@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DatabaseController {
     
@@ -73,6 +74,64 @@ public class DatabaseController {
             ex.printStackTrace();
         }
         return null;
+    }
+    
+    public List<String> getGeumata(String category) {
+        String query = "SELECT * FROM getGeumata(?)";
+        List<String> geumata = new ArrayList<>();
+        PreparedStatement stmt = null;
+        try {
+            stmt = dbConnection.prepareStatement(query);
+            stmt.setString(1, category);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                String geuma = rs.getString("getgeumata");
+                geumata.add(geuma);
+            }
+            stmt.close();
+            return geumata;
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    
+    public String[] getCategories() {
+        String query = "SELECT DISTINCT category FROM katalogos";
+        List<String> categories = new ArrayList<>();
+        PreparedStatement stmt = null;
+        try {
+            stmt = dbConnection.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                String category = rs.getString("category");
+                categories.add(category);
+            }
+            stmt.close();
+            return categories.toArray(new String[categories.size()]);
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    
+    public void insertItem(Map<String, String> item) {
+        String category = item.get("category");
+        double price = Double.parseDouble(item.get("price"));
+        String name = item.get("name");
+        int availability = 20; // TODO: Change this when GUI availability is implemented
+        String query = "INSERT INTO katalogos(konoma, price, availability, category) VALUES (?, ?, ?, ?)";
+        PreparedStatement stmt = null;
+        try {
+            stmt = dbConnection.prepareCall(query);
+            stmt.setString(1, name);
+            stmt.setDouble(2, price);
+            stmt.setInt(3, availability);
+            stmt.setString(4, category);
+            stmt.executeUpdate();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
     }
     
     public void close() {

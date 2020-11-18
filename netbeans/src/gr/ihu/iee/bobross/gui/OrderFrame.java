@@ -5,31 +5,35 @@
  */
 
 package gr.ihu.iee.bobross.gui;
+import gr.ihu.iee.bobross.controller.DatabaseController;
 import javax.swing.DefaultListModel;
 import gr.ihu.iee.bobross.objects.BobTable;
+import java.util.Collections;
+import java.util.List;
 /**
  *
  * @author alexm
  */
 public class OrderFrame extends javax.swing.JFrame {
 
+    private DatabaseController db;
+    
     /**
      * Creates new form OrderFrame
      */
-    // TODO: Replace JLabel with Restaurant Table class when created
-    public OrderFrame(BobTable table) {
+    public OrderFrame(BobTable table, DatabaseController db) {
         initComponents();
         if(table == null)
             return;
+        if(db == null)
+            return;
+        this.db = db;
         TableNumber.setText("Table " + String.valueOf(table.getTableId()));
     }
     
     public OrderFrame() {
-        this(null);
+        this(null, null);
     }
-    
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -281,63 +285,63 @@ public class OrderFrame extends javax.swing.JFrame {
         KatigoriaFagitouLabel.setText("Κυρίως πιάτα");
         KatalogosList.setModel(mod);
         mod.removeAllElements();
-        for (int i=0 ; i!=11 ; i++){
-            mod.addElement("Κυρίως πιάτο "+i);
-        }
+        List<String> geumata = db.getGeumata(KatigoriaFagitouLabel.getText());
+        for(String s : geumata)
+            mod.addElement(s);
     }//GEN-LAST:event_KiriosButtonActionPerformed
 
     private void OrektikoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OrektikoButtonActionPerformed
         KatigoriaFagitouLabel.setText("Ορεκτικά");
         KatalogosList.setModel(mod);
         mod.removeAllElements();
-        for (int i=0 ; i!=11 ; i++){
-            mod.addElement("Ορεκτικό "+i);
-        }
+        List<String> geumata = db.getGeumata(KatigoriaFagitouLabel.getText());
+        for(String s : geumata)
+            mod.addElement(s);
     }//GEN-LAST:event_OrektikoButtonActionPerformed
     
     private void EpidorpioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EpidorpioButtonActionPerformed
         KatigoriaFagitouLabel.setText("Επιδόρπια"); 
         KatalogosList.setModel(mod);
         mod.removeAllElements();
-        for (int i=0 ; i!=11 ; i++){
-            mod.addElement("Επιδόρπιο "+i);
-        }
+        List<String> geumata = db.getGeumata(KatigoriaFagitouLabel.getText());
+        for(String s : geumata)
+            mod.addElement(s);
     }//GEN-LAST:event_EpidorpioButtonActionPerformed
 
     private void MpiraButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MpiraButtonActionPerformed
         KatigoriaFagitouLabel.setText("Μπύρες");
         KatalogosList.setModel(mod);
         mod.removeAllElements();
-        for (int i=0 ; i!=11 ; i++){
-            mod.addElement("Μπύρα "+i);
-        }
+        List<String> geumata = db.getGeumata(KatigoriaFagitouLabel.getText());
+        for(String s : geumata)
+            mod.addElement(s);
     }//GEN-LAST:event_MpiraButtonActionPerformed
 
     private void SalataButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalataButtonActionPerformed
         KatigoriaFagitouLabel.setText("Σαλάτες");
         KatalogosList.setModel(mod);
         mod.removeAllElements();
-        for (int i=0 ; i!=11 ; i++){
-            mod.addElement("Σαλάτα "+i);
-        }
+        List<String> geumata = db.getGeumata(KatigoriaFagitouLabel.getText());
+        for(String s : geumata)
+            mod.addElement(s);
     }//GEN-LAST:event_SalataButtonActionPerformed
 
     private void AnapsiktikoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnapsiktikoButtonActionPerformed
         KatigoriaFagitouLabel.setText("Αναψυκτικά");
         KatalogosList.setModel(mod);
         mod.removeAllElements();
-        for (int i=0 ; i!=11 ; i++){
-            mod.addElement("Αναψυκρικό "+i);
-        }
+        List<String> geumata = db.getGeumata(KatigoriaFagitouLabel.getText());
+        for(String s : geumata)
+            mod.addElement(s);
     }//GEN-LAST:event_AnapsiktikoButtonActionPerformed
 
     private void KrasiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KrasiButtonActionPerformed
         KatigoriaFagitouLabel.setText("Κρασιά");
         KatalogosList.setModel(mod);
         mod.removeAllElements();
-        for (int i=0 ; i!=11 ; i++){
-            mod.addElement("Κρασί "+i);
-        }
+        List<String> geumata = db.getGeumata(KatigoriaFagitouLabel.getText());
+        for(String s : geumata)
+            mod.addElement(s);
     }//GEN-LAST:event_KrasiButtonActionPerformed
 
     private void AddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddButtonActionPerformed
@@ -359,7 +363,11 @@ public class OrderFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_OkeyButtonActionPerformed
 
     private void RemoveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoveButtonActionPerformed
-        
+        DefaultListModel model = (DefaultListModel) jList1.getModel();
+        int removeIndex = jList1.getSelectedIndex();
+        if(removeIndex == -1)
+            return;
+        model.remove(removeIndex);
     }//GEN-LAST:event_RemoveButtonActionPerformed
 
     private void NextOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextOrderActionPerformed

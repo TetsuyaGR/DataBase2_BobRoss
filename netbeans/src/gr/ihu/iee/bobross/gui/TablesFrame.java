@@ -18,12 +18,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import gr.ihu.iee.bobross.objects.BobTable;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import static utils.Helpers.centreWindow;
 
 public class TablesFrame extends JFrame {
     private JPanel panel;
@@ -47,7 +49,7 @@ public class TablesFrame extends JFrame {
     public TablesFrame() {
         List<BobTable> jtables = new ArrayList<>();
         HashMap<Integer, Integer> trapezia = null;
-        Font buttonFont = new Font("Dialog", 0, 14);
+        
         BobMouseHandler mouseHandler = new BobMouseHandler();
         panel = new JPanel();
         db = new DatabaseController();
@@ -79,25 +81,12 @@ public class TablesFrame extends JFrame {
             view.add(table);
             view.validate();
         }
-        /*for(int i = 0; i < tables;i++) {
-            jtables[i] = new BobTable(i);
-            jtables[i].setOpaque(true);
-            jtables[i].setText(String.valueOf(i+1));
-            jtables[i].setIcon(redTableIcon);
-            jtables[i].setSize(64, 64);
-            jtables[i].setBorder(BorderFactory.createLineBorder(Color.black));
-            jtables[i].addMouseListener(mouseHandler);
-            jtables[i].setHorizontalAlignment(JButton.CENTER);
-            jtables[i].setHorizontalTextPosition(JButton.CENTER);
-            jtables[i].setVerticalTextPosition(JButton.TOP);
-            if(i%5==0) {
-                jtables[i].setAvailable(true);
-                jtables[i].setIcon(greenTableIcon);
-            }
-            jtables[i].setVisible(true);
-            view.add(jtables[i]);
-            view.validate();
-        }*/
+        initFrameComponents(view, scrollPane);
+        initFrame();
+    }
+    
+    private void initFrameComponents(JPanel view, JScrollPane scrollPane) {
+        Font buttonFont = new Font("Dialog", 0, 14);
         JLabel availableTables = new JLabel();
         availableTables.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         availableTables.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -107,7 +96,7 @@ public class TablesFrame extends JFrame {
         orderButton.setFont(buttonFont);
         orderButton.setText("Order");
         orderButton.setPreferredSize(new Dimension(200, 30));
-        orderButton.addActionListener(new java.awt.event.ActionListener() {
+        orderButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 OrderButtonActionPerformed(evt);
             }
@@ -116,9 +105,18 @@ public class TablesFrame extends JFrame {
         payButton.setFont(buttonFont);
         payButton.setText("Pay");
         payButton.setPreferredSize(new Dimension(200,30));
-        payButton.addActionListener(new java.awt.event.ActionListener() {
+        payButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 PayButtonActionPerformed(evt);
+            }
+        });
+        JButton addButton = new JButton();
+        addButton.setFont(buttonFont);
+        addButton.setText("Add");
+        addButton.setPreferredSize(new Dimension(200, 30));
+        addButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                new AddItemFrame(db).setVisible(true);
             }
         });
         view.setVisible(true);
@@ -132,11 +130,10 @@ public class TablesFrame extends JFrame {
         buttonContainer.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
         buttonContainer.add(orderButton);
         buttonContainer.add(payButton);
+        buttonContainer.add(addButton);
         buttonContainer.setVisible(true);
         panel.add(buttonContainer, BorderLayout.SOUTH);
         panel.setVisible(true);
-        
-        initFrame();
     }
     
     private void PayButtonActionPerformed(ActionEvent evt) {
@@ -144,7 +141,7 @@ public class TablesFrame extends JFrame {
     }
     
     private void OrderButtonActionPerformed(ActionEvent evt) {
-        new OrderFrame(selectedLabel).setVisible(true);
+        new OrderFrame(selectedLabel, db).setVisible(true);
     }
     
     private void initFrame() {
@@ -161,12 +158,5 @@ public class TablesFrame extends JFrame {
                 System.exit(0);
             }
         });
-    }
-    
-    public static void centreWindow(Window frame) {
-        Dimension dimension = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
-        int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
-        frame.setLocation(x, y);
     }
 }
