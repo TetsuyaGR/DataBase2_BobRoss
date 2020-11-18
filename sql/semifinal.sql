@@ -27,7 +27,7 @@ $$
 CREATE TABLE katalogos(
   kid SERIAL,
   konoma VARCHAR(25),
-  price real constraint c_price check (price>0),
+  price float constraint c_price check (price>0),
   availability INT constraint c_availability check (availability=0 or availability>0),
   category VARCHAR(25),
   constraint c_kid PRIMARY KEY(kid)
@@ -233,7 +233,7 @@ returns void as $$
   insert into servitoros(onoma) values ($1);
 $$ language sql;
 
-create or replace function putKatalogos(varchar, real, int, varchar)
+create or replace function putKatalogos(varchar, float, int, varchar)
 returns void as $$
   insert into katalogos(konoma, price, availability, category) values ($1, $2, $3, $4);
 $$ language sql;
