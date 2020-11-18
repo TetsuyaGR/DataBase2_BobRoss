@@ -203,7 +203,7 @@ public class OrderFrame extends javax.swing.JFrame {
         });
 
         NextOrder.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        NextOrder.setText("next order");
+        NextOrder.setText("submit");
         NextOrder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NextOrderActionPerformed(evt);
@@ -371,8 +371,7 @@ public class OrderFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_RemoveButtonActionPerformed
 
     private void NextOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextOrderActionPerformed
-        new StrartingFrame().setVisible(true);
-        this.setVisible(false);
+        
     }//GEN-LAST:event_NextOrderActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -335,3 +335,63 @@ create or replace function getMerides(int) returns int as $$
 	join paraggelia p on p.katalogosid=p.pid
 	where k.kid=$1;
 $$ language sql;
+
+-- insert more data
+
+select putKatalogos('Χόρτα', 4.70, 20, 'Ορεκτικά');
+select putKatalogos('Μανιτάρια πλευρώτους', 5.60, 15, 'Ορεκτικά');
+select putKatalogos('Χορτόπιτα', 4.70, 30, 'Ορεκτικά');
+select putKatalogos('Γαύρος μαρινάτος', 5.40, 20, 'Ορεκτικά');
+select putKatalogos('Φάβα', 4.90, 20, 'Ορεκτικά');
+select putKatalogos('Ρεβύθια Κυκλαδίτικα', 5.40, 15, 'Ορεκτικά');
+select putKatalogos('Τυρί σαγανάκι', 4.80, 40, 'Ορεκτικά');
+select putKatalogos('Χαλούμι', 5.80, 20, 'Ορεκτικά');
+select putKatalogos('Τραγανές πατατούλες', 3.50, 60, 'Ορεκτικά');
+select putKatalogos('Σκορδαλιά', 4.20, 30, 'Ορεκτικά');
+select putKatalogos('Τυροκαυτερή', 3.70, 25, 'Ορεκτικά');
+select putKatalogos('Λουκάνικο καπνιστό', 3.80, 30, 'Ορεκτικά');
+select putKatalogos('Βραστά λαχανικά', 6.30, 20, 'Ορεκτικά');
+select putKatalogos('Μπαγκέτα ψωμί', 0.60, 200, 'Ορεκτικά');
+
+select putKatalogos('Σαλάτα με αποξηραμένα σύκα', 8.60, 50, 'Σαλάτες');
+select putKatalogos('«ΔΙΠΑΕ»', 8.00, 50, 'Σαλάτες');
+select putKatalogos('Εποχής', 6.80, 50, 'Σαλάτες');
+select putKatalogos('Ρόκα', 6.70, 50, 'Σαλάτες');
+select putKatalogos('Πράσινη', 6.80, 50, 'Σαλάτες');
+select putKatalogos('Σαλάτα του αγρού', 5.80, 50, 'Σαλάτες');
+select putKatalogos('Χωριάτικη', 7.70, 50, 'Σαλάτες');
+
+select putKatalogos('Ψαρόσουπα', 6.10, 25, 'Κυρίως πιάτα');
+select putKatalogos('Σουπιές με σπανάκι', 8.80, 30, 'Κυρίως πιάτα');
+select putKatalogos('Ρεβύθια Κυκλαδίτικα', 5.40, 25, 'Κυρίως πιάτα');
+select putKatalogos('Λιγκουίνι με σπανάκι', 8.40, 35, 'Κυρίως πιάτα');
+select putKatalogos('Λαχανοντολμάδες', 8.30, 40, 'Κυρίως πιάτα');
+select putKatalogos('Κεφτεδάκια', 7.80, 30, 'Κυρίως πιάτα');
+select putKatalogos('Μοσχαράκι γάλακτος', 10.40, 20, 'Κυρίως πιάτα');
+select putKatalogos('Σνίτσελ κοτόπουλο', 7.80, 30, 'Κυρίως πιάτα');
+select putKatalogos('Κοτόπουλο με σπιτικές χυλοπίτες', 9.30, 20, 'Κυρίως πιάτα');
+
+select putKatalogos('Γιαούρτι με μέλι και καρύδια', 3.20, 100, 'Επιδόρπια');
+select putKatalogos('Καρυδόπιτα', 3.30, 100, 'Επιδόρπια');
+select putKatalogos('Γιαούρτι με γλυκό βύσσινο', 3.20, 100, 'Επιδόρπια');
+select putKatalogos('Ραβανί', 1.50, 100, 'Επιδόρπια');
+select putKatalogos('Φρούτα εποχής', 1.80, 100, 'Επιδόρπια');
+
+select putKatalogos('Μάμος', 1.50, 500, 'Μπύρες');
+select putKatalogos('Βεργίνα', 1.50, 500, 'Μπύρες');
+select putKatalogos('Fischer', 2.00, 250, 'Μπύρες');
+select putKatalogos('Kaiser', 2.00, 250, 'Μπύρες');
+select putKatalogos('Άλφα', 1.50, 500, 'Μπύρες');
+select putKatalogos('Fix', 1.50, 500, 'Μπύρες');
+select putKatalogos('Μύθος', 1.50, 500, 'Μπύρες');
+select putKatalogos('Amstel', 1.50, 500, 'Μπύρες');
+select putKatalogos('Heineken', 1.50, 500, 'Μπύρες');
+
+select putKatalogos('Coca-Cola', 1.40, 500, 'Αναψυκτικά');
+select putKatalogos('Sprite', 1.40, 500, 'Αναψυκτικά');
+select putKatalogos('Fanta', 1.40, 500, 'Αναψυκτικά');
+select putKatalogos('Νερό εμφιαλωμένο ΖΑΓΟΡΙ (1l)', 2.00, 500, 'Αναψυκτικά');
+
+select putKatalogos('Κόκκινο Ημίγλυκο', 2.00, 500, 'Κρασιά');
+select putKatalogos('Κόκκινο Ερυθρό', 2.00, 500, 'Κρασιά');
+select putKatalogos('Λευκό Ερυθρό', 2.00, 500, 'Κρασιά');

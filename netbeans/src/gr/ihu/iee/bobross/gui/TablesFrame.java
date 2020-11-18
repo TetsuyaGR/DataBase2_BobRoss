@@ -6,7 +6,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -141,6 +140,8 @@ public class TablesFrame extends JFrame {
     }
     
     private void OrderButtonActionPerformed(ActionEvent evt) {
+        if(selectedLabel == null)
+            return;
         new OrderFrame(selectedLabel, db).setVisible(true);
     }
     
