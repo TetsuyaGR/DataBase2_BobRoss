@@ -14,9 +14,9 @@ import java.util.Map;
 public class DatabaseController {
     
     private static String driverClassName = "org.postgresql.Driver";
-    private static String url = "jdbc:postgresql://localhost:54322/it185233";
-    private static String username = "it185233";
-    private static String password = "it185233Alex";
+    private static String url = "jdbc:postgresql://dblabs.it.teithe.gr:5432/it185240";
+    private static String username = "it185240";
+    private static String password = "528639417";
     
     private Connection dbConnection;
     
@@ -132,6 +132,34 @@ public class DatabaseController {
         } catch(SQLException ex) {
             ex.printStackTrace();
         }
+    }
+    
+    public Map<Integer, String> getAllServitorous() {
+        String query = "SELECT * FROM servitoros";
+        Map<Integer, String> onomata = new HashMap<>();
+        PreparedStatement stmt = null;
+        try {
+            stmt = dbConnection.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                int id = rs.getInt("sid");
+                String onoma = rs.getString("onoma");
+                onomata.put(id, onoma);
+            }
+            stmt.close();
+            return onomata;
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    
+    public void insertParaggelia(String katalogos, int amount, int receiptid) {
+        
+    }
+    
+    public void insertReceipt(String servitoros) {
+        
     }
     
     public void close() {

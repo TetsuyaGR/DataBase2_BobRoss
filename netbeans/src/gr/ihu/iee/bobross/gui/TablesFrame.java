@@ -30,8 +30,8 @@ public class TablesFrame extends JFrame {
     private JPanel panel;
     private DatabaseController db;
     private BobTable selectedLabel = null;
-    private ImageIcon redTableIcon = new ImageIcon(getClass().getResource("/gui/table_red.png"));
-    private ImageIcon greenTableIcon = new ImageIcon(getClass().getResource("/gui/table_green.png"));
+    private ImageIcon redTableIcon = new ImageIcon(getClass().getResource("/gr/ihu/iee/bobross/gui/table_red.png"));
+    private ImageIcon greenTableIcon = new ImageIcon(getClass().getResource("/gr/ihu/iee/bobross/gui/table_green.png"));
     
     private class BobMouseHandler extends MouseAdapter {
         @Override
@@ -142,7 +142,10 @@ public class TablesFrame extends JFrame {
     private void OrderButtonActionPerformed(ActionEvent evt) {
         if(selectedLabel == null)
             return;
-        new OrderFrame(selectedLabel, db).setVisible(true);
+        if(selectedLabel.isAvailable())
+            new ServitorosFrame(selectedLabel, db).setVisible(true);
+        else
+            new OrderFrame(selectedLabel, db).setVisible(true);
     }
     
     private void initFrame() {

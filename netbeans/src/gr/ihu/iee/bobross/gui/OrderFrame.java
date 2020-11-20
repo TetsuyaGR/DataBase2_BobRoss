@@ -17,17 +17,20 @@ import java.util.List;
 public class OrderFrame extends javax.swing.JFrame {
 
     private DatabaseController db;
+    private BobTable table;
     
     /**
      * Creates new form OrderFrame
      */
     public OrderFrame(BobTable table, DatabaseController db) {
         initComponents();
+        
         if(table == null)
-            return;
+            return; 
         if(db == null)
             return;
         this.db = db;
+        this.table = table;
         TableNumber.setText("Table " + String.valueOf(table.getTableId()));
     }
     
@@ -48,6 +51,7 @@ public class OrderFrame extends javax.swing.JFrame {
         Fagito = new javax.swing.JLabel();
         OkeyButton = new javax.swing.JButton();
         CancelButton = new javax.swing.JButton();
+        jSpinner1 = new javax.swing.JSpinner();
         TableNumber = new javax.swing.JLabel();
         KiriosButton = new javax.swing.JButton();
         OrektikoButton = new javax.swing.JButton();
@@ -86,26 +90,35 @@ public class OrderFrame extends javax.swing.JFrame {
             }
         });
 
+        jSpinner1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(1, 1, 99, 1));
+
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
         jFrame1Layout.setHorizontalGroup(
             jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jFrame1Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(OkeyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(CancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jFrame1Layout.createSequentialGroup()
+                .addGroup(jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jFrame1Layout.createSequentialGroup()
+                        .addGap(76, 76, 76)
+                        .addComponent(Fagito, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jFrame1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(OkeyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(CancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(24, 24, 24))
-            .addGroup(jFrame1Layout.createSequentialGroup()
-                .addGap(76, 76, 76)
-                .addComponent(Fagito, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(91, Short.MAX_VALUE))
         );
         jFrame1Layout.setVerticalGroup(
             jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jFrame1Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addComponent(Fagito, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(Fagito, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                    .addComponent(jSpinner1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
                 .addGroup(jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -371,7 +384,16 @@ public class OrderFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_RemoveButtonActionPerformed
 
     private void NextOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextOrderActionPerformed
-        
+        DefaultListModel model = (DefaultListModel) jList1.getModel();
+        int size = model.getSize();
+        if(table.isAvailable() == false) {
+            
+        }
+        for(int i = 0;i < size;i++) {
+            String geuma = (String) model.get(i);
+            
+        }
+        this.dispose();
     }//GEN-LAST:event_NextOrderActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -395,5 +417,6 @@ public class OrderFrame extends javax.swing.JFrame {
     private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSpinner jSpinner1;
     // End of variables declaration//GEN-END:variables
 }

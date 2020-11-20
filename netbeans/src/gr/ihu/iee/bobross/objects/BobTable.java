@@ -18,6 +18,7 @@ public class BobTable extends JLabel {
     
     public int getTableId() { return this.tableId; }
     public boolean isAvailable() { return (receiptId == 0); }
+    public int getReceiptId() { return receiptId; }
     
     public void setReceiptId(int receiptId) { this.receiptId = receiptId; }
 
