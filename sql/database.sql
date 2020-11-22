@@ -336,6 +336,8 @@ create or replace function getMerides(int) returns int as $$
 	where k.kid=$1;
 $$ language sql;
 
+
+
 -- insert more data
 
 select putKatalogos('Χόρτα', 4.70, 20, 'Ορεκτικά');
@@ -395,3 +397,49 @@ select putKatalogos('Νερό εμφιαλωμένο ΖΑΓΟΡΙ (1l)', 2.00, 5
 select putKatalogos('Κόκκινο Ημίγλυκο', 2.00, 500, 'Κρασιά');
 select putKatalogos('Κόκκινο Ερυθρό', 2.00, 500, 'Κρασιά');
 select putKatalogos('Λευκό Ερυθρό', 2.00, 500, 'Κρασιά');
+
+
+--getters 
+create or replace function getTrapezi(int)
+returns setof Trapezi as $$
+select * from trapezi t
+where t.tid=$1;
+$$ language sql
+
+select * from getTrapezi(1);
+
+
+create or replace function getParaggelia(int)
+returns setof paraggelia as $$
+select * from paraggelia p 
+where p.pid=$1;
+$$ language sql 
+
+select * from getParaggelia(2);
+
+
+create or replace function getReceipt(int) 
+returns setof receipt as $$
+select * from receipt r
+where r.rid=$1;
+$$ language sql
+
+select * from getReceipt(3);
+
+
+create or replace function getServitoros(int)
+returns setof servitoros as $$
+select * from servitoros s
+where s.sid=$1;
+$$ language sql
+
+select * from getServitoros(2);
+
+
+create or replace function getKatalogos(int) 
+returns setof katalogos as $$
+select * from katalogos k
+where k.kid=$1;
+$$ language sql 
+
+select * from getKatalogos(4);
