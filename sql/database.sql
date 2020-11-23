@@ -1,4 +1,12 @@
 --- drop function
+DROP TABLE IF EXISTS 
+  katalogos,
+  paraggelia,
+  receipt,
+  trapezi,
+  servitoros,
+  log_file
+  CASCADE;
 drop function if exists createdb();
 drop function if exists dropdb();
 drop function if exists insertdb();
@@ -13,7 +21,8 @@ DROP TABLE IF EXISTS
   receipt,
   trapezi,
   servitoros,
-  log_file;
+  log_file
+  CASCADE;
 
 $$ LANGUAGE SQL;
 
@@ -398,48 +407,33 @@ select putKatalogos('Κόκκινο Ημίγλυκο', 2.00, 500, 'Κρασιά'
 select putKatalogos('Κόκκινο Ερυθρό', 2.00, 500, 'Κρασιά');
 select putKatalogos('Λευκό Ερυθρό', 2.00, 500, 'Κρασιά');
 
-
 --getters 
 create or replace function getTrapezi(int)
-returns setof Trapezi as $$
+returns trapezi as $$
 select * from trapezi t
 where t.tid=$1;
 $$ language sql
 
-select * from getTrapezi(1);
-
-
 create or replace function getParaggelia(int)
-returns setof paraggelia as $$
+returns paraggelia as $$
 select * from paraggelia p 
 where p.pid=$1;
 $$ language sql 
 
-select * from getParaggelia(2);
-
-
 create or replace function getReceipt(int) 
-returns setof receipt as $$
+returns receipt as $$
 select * from receipt r
 where r.rid=$1;
 $$ language sql
 
-select * from getReceipt(3);
-
-
 create or replace function getServitoros(int)
-returns setof servitoros as $$
+returns servitoros as $$
 select * from servitoros s
 where s.sid=$1;
 $$ language sql
 
-select * from getServitoros(2);
-
-
 create or replace function getKatalogos(int) 
-returns setof katalogos as $$
+returns katalogos as $$
 select * from katalogos k
 where k.kid=$1;
 $$ language sql 
-
-select * from getKatalogos(4);
