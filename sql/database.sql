@@ -426,14 +426,15 @@ select * from receipt r
 where r.rid=$1;
 $$ language sql
 
-create or replace function getServitoros(int)
-returns servitoros as $$
-select * from servitoros s
-where s.sid=$1;
+create or replace function getServitoros(varchar)
+returns int as $$
+select s.sid from servitoros s
+where s.onoma=$1;
 $$ language sql
 
-create or replace function getKatalogos(int) 
-returns katalogos as $$
-select * from katalogos k
-where k.kid=$1;
+
+create or replace function getKatalogos(varchar) 
+returns int as $$
+select k.kid from katalogos k
+where k.konoma=$1;
 $$ language sql 
