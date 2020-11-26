@@ -1,5 +1,6 @@
 package gr.ihu.iee.bobross.objects;
 
+import gr.ihu.iee.bobross.gui.TablesFrame;
 import javax.swing.JLabel;
 
 public class BobTable extends JLabel {
@@ -20,6 +21,12 @@ public class BobTable extends JLabel {
     public boolean isAvailable() { return (receiptId == 0); }
     public int getReceiptId() { return receiptId; }
     
-    public void setReceiptId(int receiptId) { this.receiptId = receiptId; }
+    public void setReceiptId(int receiptId) { 
+        this.receiptId = receiptId;
+        if(isAvailable())
+            this.setIcon(TablesFrame.greenTableIcon);
+        else
+            this.setIcon(TablesFrame.redTableIcon);
+    }
 
 }

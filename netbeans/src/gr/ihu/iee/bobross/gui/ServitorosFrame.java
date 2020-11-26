@@ -19,9 +19,14 @@ public class ServitorosFrame extends javax.swing.JFrame {
     /**
      * Creates new form ServitorosFrame
      */
+    private BobTable table;
+    private DatabaseController db;
+    
     public ServitorosFrame(BobTable table, DatabaseController db) {
         initComponents();
         centreWindow(this);
+        this.table = table;
+        this.db = db;
         Map<Integer, String> onomata = db.getAllServitorous();
         jComboBox2.removeAllItems();
         for(Map.Entry servitoros : onomata.entrySet())
@@ -46,6 +51,11 @@ public class ServitorosFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jButton3.setText("Okey");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Cancer");
 
@@ -87,6 +97,19 @@ public class ServitorosFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        String onoma = (String) jComboBox2.getSelectedItem();
+        int receiptId = db.insertReceipt(onoma);
+        if(receiptId == 0) {
+            System.out.println("ERROR: Couldn't create receiptId with servitoros " + onoma);
+            return;
+        }
+        db.updateTable(table.getTableId(), receiptId);
+        table.setReceiptId(receiptId);
+        new OrderFrame(table, db).setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

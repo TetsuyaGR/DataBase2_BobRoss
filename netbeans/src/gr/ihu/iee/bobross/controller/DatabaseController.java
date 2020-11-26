@@ -1,5 +1,6 @@
 package gr.ihu.iee.bobross.controller;
 
+import gr.ihu.iee.bobross.objects.BobItem;
 import gr.ihu.iee.bobross.objects.BobTable;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,9 +15,9 @@ import java.util.Map;
 public class DatabaseController {
     
     private static String driverClassName = "org.postgresql.Driver";
-    private static String url = "jdbc:postgresql://dblabs.it.teithe.gr:5432/it185240";
-    private static String username = "it185240";
-    private static String password = "528639417";
+    private static String url = "jdbc:postgresql://localhost:54322/it185233";
+    private static String username = "it185233";
+    private static String password = "it185233Alex";
     
     private Connection dbConnection;
     
@@ -36,7 +37,7 @@ public class DatabaseController {
     }
     
     public BobTable getTrapezi(int id) {
-        String query = "SELECT * FROM trapezi WHERE tid = ?";
+        String query = "SELECT getTrapezi(?)";
         BobTable table = null;
         PreparedStatement stmt = null;
         try {
@@ -134,8 +135,44 @@ public class DatabaseController {
         }
     }
     
+    public int getServitorosId(String onoma) {
+        String query = "SELECT getServitoros(?)";
+        int servitorosId = 0;
+        PreparedStatement stmt = null;
+        try {
+            stmt = dbConnection.prepareStatement(query);
+            stmt.setString(1, onoma);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                servitorosId = rs.getInt(1);
+            }
+            stmt.close();
+            return servitorosId;
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+        return 0;
+    }
+    
+    public String getServitorosName(int receiptId) {
+        String query = "SELECT getServitorosFromReceipt(?)";
+        String servitoros = "";
+        PreparedStatement stmt = null;
+        try {
+            stmt = dbConnection.prepareStatement(query);
+            stmt.setInt(1, receiptId);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next())
+                servitoros = rs.getString(1);
+            stmt.close();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+        return servitoros;
+    }
+    
     public Map<Integer, String> getAllServitorous() {
-        String query = "SELECT * FROM servitoros";
+        String query = "SELECT * FROM getAllServitorous()";
         Map<Integer, String> onomata = new HashMap<>();
         PreparedStatement stmt = null;
         try {
@@ -154,12 +191,116 @@ public class DatabaseController {
         return null;
     }
     
-    public void insertParaggelia(String katalogos, int amount, int receiptid) {
-        
+    public int getKatalogosId(String katalogos) {
+        String query = "SELECT getKatalogos(?)";
+        int katalogosId = 0;
+        PreparedStatement stmt = null;
+        try {
+            stmt = dbConnection.prepareStatement(query);
+            stmt.setString(1, katalogos);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                katalogosId = rs.getInt(1);
+            }
+            stmt.close();
+            return katalogosId;
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+        return 0;
     }
     
-    public void insertReceipt(String servitoros) {
-        
+    public float getLogariasmo(BobTable table) {
+        int receiptId = table.getTableId();
+        String query = "SELECT getLogariasmo(?)";
+        float logariasmos = 0.0f;
+        PreparedStatement stmt = null;
+        try {
+            stmt = dbConnection.prepareStatement(query);
+            stmt.setInt(1, receiptId);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next())
+                logariasmos = rs.getFloat(1);
+            stmt.close();
+            return logariasmos;
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+        return logariasmos;
+    }
+    
+    public HashMap<String, Integer> getAllParaggelies(int receiptId) {
+        String query = "SELECT * FROM getAllParaggelies(?)";
+        HashMap<String, Integer> paraggelies = new HashMap<>();
+        PreparedStatement stmt = null;
+        try {
+            stmt = dbConnection.prepareStatement(query);
+            stmt.setInt(1, receiptId);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                String katalogos = rs.getString("katalogos");
+                int amount = rs.getInt("amount");
+                paraggelies.put(katalogos, amount);
+            }
+            stmt.close();
+            return paraggelies;
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    
+    public void insertParaggelia(BobItem geuma) {
+        int katalogosId = getKatalogosId(geuma.getGeuma());
+        if(katalogosId == 0) {
+            System.out.println("ERROR: Couldn't find proion " + geuma.getGeuma());
+            return;
+        }
+        String query = "SELECT putParaggelia(?, ?, ?)";
+        PreparedStatement stmt = null;
+        try {
+            stmt = dbConnection.prepareCall(query);
+            stmt.setInt(1, katalogosId);
+            stmt.setInt(2, geuma.getAmount());
+            stmt.setInt(3, geuma.getReceiptId());
+            stmt.executeQuery();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public int insertReceipt(String servitoros) {
+        int servitorosId = getServitorosId(servitoros);
+        if(servitorosId == 0) {
+            System.out.println("ERROR: Couldn't find servitoros " + servitoros);
+            return 0;
+        }
+        String query = "SELECT putReceipt(?)";
+        PreparedStatement stmt = null;
+        int receiptId = 0;
+        try {
+            stmt = dbConnection.prepareCall(query);
+            stmt.setInt(1, servitorosId);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next())
+                receiptId = rs.getInt(1);
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+        return receiptId;
+    }
+    
+    public void updateTable(int tableId, int receiptId) {
+        String query = "SELECT updateTable(?, ?)";
+        PreparedStatement stmt = null;
+        try {
+            stmt = dbConnection.prepareCall(query);
+            stmt.setInt(1, tableId);
+            stmt.setInt(2, receiptId);
+            stmt.executeQuery();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
     }
     
     public void close() {

@@ -6,6 +6,7 @@
 
 package gr.ihu.iee.bobross.gui;
 import gr.ihu.iee.bobross.controller.DatabaseController;
+import gr.ihu.iee.bobross.objects.BobItem;
 import javax.swing.DefaultListModel;
 import gr.ihu.iee.bobross.objects.BobTable;
 import java.util.Collections;
@@ -370,8 +371,7 @@ public class OrderFrame extends javax.swing.JFrame {
     private void OkeyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkeyButtonActionPerformed
         jFrame1.dispose();
         jList1.setModel(mod2);
-        mod2.addElement(KatalogosList.getSelectedValue());
-        
+        mod2.addElement(new BobItem(KatalogosList.getSelectedValue(), (int) jSpinner1.getValue(), table.getReceiptId()));
         
     }//GEN-LAST:event_OkeyButtonActionPerformed
 
@@ -386,12 +386,9 @@ public class OrderFrame extends javax.swing.JFrame {
     private void NextOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextOrderActionPerformed
         DefaultListModel model = (DefaultListModel) jList1.getModel();
         int size = model.getSize();
-        if(table.isAvailable() == false) {
-            
-        }
         for(int i = 0;i < size;i++) {
-            String geuma = (String) model.get(i);
-            
+            BobItem geuma = (BobItem) model.get(i);
+            db.insertParaggelia(geuma);
         }
         this.dispose();
     }//GEN-LAST:event_NextOrderActionPerformed

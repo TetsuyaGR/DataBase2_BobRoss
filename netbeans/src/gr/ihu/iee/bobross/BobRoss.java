@@ -1,6 +1,5 @@
 package gr.ihu.iee.bobross;
 
-import gr.ihu.iee.bobross.controller.DatabaseController;
 import gr.ihu.iee.bobross.gui.TablesFrame;
 import static javax.swing.SwingUtilities.invokeLater;
 
