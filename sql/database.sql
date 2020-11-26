@@ -259,7 +259,7 @@ $$ language sql;
 
 -- Τι χρωστάει το τραπέζι x
 
-create or replace function getLogariasmo(float) returns float as $$
+create or replace function getLogariasmo(int) returns float as $$
   select SUM(price*amount) FROM receipt r
   JOIN trapezi t ON t.receiptID=r.rid
   join paraggelia p on p.receiptID=r.rid
@@ -438,3 +438,27 @@ returns int as $$
 select k.kid from katalogos k
 where k.konoma=$1;
 $$ language sql; 
+
+create or replace function updateTable(int, int)
+returns void as $$
+  update trapezi set receiptid=$2 where tid=$1;
+$$ language sql;
+
+create or replace function getAllServitorous() returns 
+setof servitoros as $$
+  select * from servitoros;
+$$ language sql;
+
+create or replace function getAllParaggelies(int) returns 
+table(katalogos varchar, amount int) as $$
+  select k.konoma, p.amount from paraggelia p
+  join katalogos k on k.kid=p.katalogosid
+  where receiptid=$1;
+$$ language sql;
+
+create or replace function getServitorosFromReceipt(int)
+  returns varchar as $$
+  select s.onoma from servitoros s
+  join receipt r on r.servitorosid=s.sid
+  where r.rid=$1;
+$$ language sql;
