@@ -229,9 +229,9 @@ public class DatabaseController {
         return logariasmos;
     }
     
-    public HashMap<String, Integer> getAllParaggelies(int receiptId) {
+    public List<BobItem> getAllParaggelies(int receiptId) {
         String query = "SELECT * FROM getAllParaggelies(?)";
-        HashMap<String, Integer> paraggelies = new HashMap<>();
+        List<BobItem> paraggelies = new ArrayList<>();
         PreparedStatement stmt = null;
         try {
             stmt = dbConnection.prepareStatement(query);
@@ -240,7 +240,8 @@ public class DatabaseController {
             while(rs.next()) {
                 String katalogos = rs.getString("katalogos");
                 int amount = rs.getInt("amount");
-                paraggelies.put(katalogos, amount);
+                float price = rs.getFloat("price");
+                paraggelies.add(new BobItem(katalogos, amount, price));
             }
             stmt.close();
             return paraggelies;
@@ -296,7 +297,10 @@ public class DatabaseController {
         try {
             stmt = dbConnection.prepareCall(query);
             stmt.setInt(1, tableId);
-            stmt.setInt(2, receiptId);
+            if(receiptId == 0)
+                stmt.setNull(2, java.sql.Types.INTEGER);
+            else
+                stmt.setInt(2, receiptId);
             stmt.executeQuery();
         } catch(SQLException ex) {
             ex.printStackTrace();

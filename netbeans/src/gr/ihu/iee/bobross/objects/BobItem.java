@@ -5,11 +5,18 @@ public class BobItem {
     private String geuma;
     private int amount;
     private int receiptId;
+    private float price;
 
     public BobItem(String geuma, int amount, int receiptId) {
         this.geuma = geuma;
         this.amount = amount;
         this.receiptId = receiptId;
+    }
+    
+    public BobItem(String geuma, int amount, float price) {
+        this.geuma = geuma;
+        this.amount = amount;
+        this.price = price;
     }
 
     public String getGeuma() {
@@ -22,6 +29,10 @@ public class BobItem {
     
     public int getReceiptId() {
         return receiptId;
+    }
+    
+    public float getPrice() {
+        return price;
     }
     
     @Override

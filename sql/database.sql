@@ -450,8 +450,8 @@ setof servitoros as $$
 $$ language sql;
 
 create or replace function getAllParaggelies(int) returns 
-table(katalogos varchar, amount int) as $$
-  select k.konoma, p.amount from paraggelia p
+table(katalogos varchar, amount int, price float) as $$
+  select k.konoma, p.amount, (k.price*p.amount) from paraggelia p
   join katalogos k on k.kid=p.katalogosid
   where receiptid=$1;
 $$ language sql;

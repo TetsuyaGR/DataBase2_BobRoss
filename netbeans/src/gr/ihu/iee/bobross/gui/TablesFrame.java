@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import static utils.Helpers.centreWindow;
+import static utils.Helpers.infoBox;
 
 public class TablesFrame extends JFrame {
     private JPanel panel;
@@ -37,18 +38,18 @@ public class TablesFrame extends JFrame {
         @Override
         public void mouseClicked(MouseEvent evt) {
             BobTable label = (BobTable) evt.getSource();
-            if(selectedLabel != null) {
+            if(selectedLabel != label && selectedLabel != null) {
                 selectedLabel.setBackground(null);
             }
-            label.setBackground(Color.gray);
-            selectedLabel = label;
+            Color c = (label.getBackground() == Color.gray) ? null : Color.gray;
+            label.setBackground(c);
+            selectedLabel = (selectedLabel != label) ? label : null;
         }
     }
     
     public TablesFrame() {
         List<BobTable> jtables = new ArrayList<>();
         HashMap<Integer, Integer> trapezia = null;
-        
         BobMouseHandler mouseHandler = new BobMouseHandler();
         panel = new JPanel();
         db = new DatabaseController();
@@ -120,11 +121,8 @@ public class TablesFrame extends JFrame {
         });
         view.setVisible(true);
         scrollPane.setVisible(true);
-        //panel.add(Box.createVerticalStrut(100));
         panel.add(availableTables, BorderLayout.NORTH);
-        //panel.add(Box.createHorizontalStrut(200));
         panel.add(scrollPane, BorderLayout.CENTER);
-        //panel.add(Box.createVerticalStrut(50));
         JPanel buttonContainer = new JPanel();
         buttonContainer.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
         buttonContainer.add(orderButton);
@@ -136,14 +134,22 @@ public class TablesFrame extends JFrame {
     }
     
     private void PayButtonActionPerformed(ActionEvent evt) {
-        if(selectedLabel == null || selectedLabel.isAvailable())
+        if(selectedLabel == null) {
+            infoBox("Πρέπει πρώτα να επιλέξετε ένα τραπέζι!", getTitle());
             return;
+        }
+        if(selectedLabel.isAvailable()) {
+            infoBox("To τραπέζι " + selectedLabel.getTableId() + " είναι άδειο!", getTitle());
+            return;
+        }
         new PaymentFrame(selectedLabel, db).setVisible(true);
     }
     
     private void OrderButtonActionPerformed(ActionEvent evt) {
-        if(selectedLabel == null)
+        if(selectedLabel == null) {
+            infoBox("Πρέπει πρώτα να επιλέξετε ένα τραπέζι!", getTitle());
             return;
+        }
         if(selectedLabel.isAvailable())
             new ServitorosFrame(selectedLabel, db).setVisible(true);
         else
@@ -153,7 +159,6 @@ public class TablesFrame extends JFrame {
     private void initFrame() {
         add(panel);
         setTitle("BobRoss Restaurant GUI");
-        //setLocation(new java.awt.Point(500, 250));
         pack();
         centreWindow(this);
         setVisible(true);
