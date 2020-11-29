@@ -23,6 +23,10 @@ public class BobItem {
         return geuma;
     }
 
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+    
     public int getAmount() {
         return amount;
     }

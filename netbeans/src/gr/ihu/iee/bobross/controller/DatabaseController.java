@@ -251,11 +251,38 @@ public class DatabaseController {
         return null;
     }
     
+    public int getMerides(int katalogosId) {
+        String query = "SELECT getMerides(?)";
+        int availability = 0;
+        PreparedStatement stmt = null;
+        try {
+            stmt = dbConnection.prepareStatement(query);
+            stmt.setInt(1, katalogosId);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                availability = rs.getInt(1);
+            }
+            stmt.close();
+            return availability;
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+        return 0;
+    }
+    
     public void insertParaggelia(BobItem geuma) {
         int katalogosId = getKatalogosId(geuma.getGeuma());
         if(katalogosId == 0) {
             System.out.println("ERROR: Couldn't find proion " + geuma.getGeuma());
             return;
+        }
+        int availability = getMerides(katalogosId);
+        if(geuma.getAmount() - availability < 0 || availability == 0) {
+            System.out.println("ERROR: Δεν υπάρχουν αρκετές μερίδες για το προϊόν " + geuma.getGeuma());
+            if(availability == 0)
+                return;
+            System.out.println("Θα περαστούν όσες υπάρχουν (" + availability + ")");
+            geuma.setAmount(availability);
         }
         String query = "SELECT putParaggelia(?, ?, ?)";
         PreparedStatement stmt = null;
