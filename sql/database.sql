@@ -223,8 +223,8 @@ select createdb();
 select insertdb();
 
 create or replace function putTrapezi(int)
-returns void as $$
-  insert into trapezi(receiptid) values ($1);
+returns int as $$
+  insert into trapezi(receiptid) values ($1) returning tid;
 $$ language sql;
 
 create or replace function putParaggelia(int, int, int)
@@ -331,10 +331,18 @@ setof varchar as $$
 
 -- Ταμειο ημερας
 
-create or replace function getTameioHmeras() returns float as $$
-	select SUM(kat.price*p.amount) as tameiohmeras from paraggelia p 
-	join receipt r on p.receiptID=r.rid 
-	join katalogos kat ON kat.kid=p.katalogosid;
+DROP TYPE IF EXISTS tameiohmeras;
+
+CREATE TYPE tameiohmeras AS (tid INT, logariasmos float, onoma TEXT);
+
+create or replace function getTameioHmeras() returns setof tameiohmeras as $$
+    select tid,sum(k.price*p.amount),s.onoma from trapezi t
+    join paraggelia p on p.receiptid = t.receiptid
+    join katalogos k on k.kid = p.katalogosid
+    join receipt r on r.rid = t.receiptid
+    join servitoros s on r.servitorosid = s.sid
+    where r.datetime >= current_date and r.datetime < current_date + interval '1 day'
+    group by t.tid, s.onoma;
 $$ language sql;
 
 -- Ποσες μεριδες εχουν μεινει απο το x φαγητο
@@ -461,4 +469,9 @@ create or replace function getServitorosFromReceipt(int)
   select s.onoma from servitoros s
   join receipt r on r.servitorosid=s.sid
   where r.rid=$1;
+$$ language sql;
+
+create or replace function dropTrapezi(int)
+returns void as $$
+  delete from trapezi where tid=$1;
 $$ language sql;
