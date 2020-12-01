@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import gr.ihu.iee.bobross.objects.BobTable;
+import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -31,6 +32,8 @@ public class TablesFrame extends JFrame {
     private JPanel panel;
     private DatabaseController db;
     private BobTable selectedLabel = null;
+    private BobMouseHandler mouseHandler;
+    private JPanel view;
     public static final ImageIcon redTableIcon = new ImageIcon(ClassLoader.getSystemResource("gr/ihu/iee/bobross/gui/table_red.png"));
     public static final ImageIcon greenTableIcon = new ImageIcon(ClassLoader.getSystemResource("gr/ihu/iee/bobross/gui/table_green.png"));
     
@@ -48,18 +51,17 @@ public class TablesFrame extends JFrame {
     }
     
     public TablesFrame() {
-        List<BobTable> jtables = new ArrayList<>();
         HashMap<Integer, Integer> trapezia = null;
-        BobMouseHandler mouseHandler = new BobMouseHandler();
+        mouseHandler = new BobMouseHandler();
         panel = new JPanel();
-        db = new DatabaseController();
+        db = new DatabaseController(this);
         panel.setLayout(new BorderLayout(25,25));
         JScrollPane scrollPane = new JScrollPane(new JPanel());
         panel.setPreferredSize(new Dimension(1280, 800));
         scrollPane.setPreferredSize(new Dimension(512, 280));
         scrollPane.setBorder(BorderFactory.createEmptyBorder(50, 300, 50, 300));
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-        JPanel view = (JPanel) scrollPane.getViewport().getView();
+        view = (JPanel) scrollPane.getViewport().getView();
         view.setLayout(new GridLayout(0,6,6,6));
         trapezia = db.getAllTrapezia();
         for(Map.Entry trapezi : trapezia.entrySet()) {
@@ -77,12 +79,43 @@ public class TablesFrame extends JFrame {
             table.setHorizontalTextPosition(JLabel.CENTER);
             table.setVerticalTextPosition(JLabel.TOP);
             table.setVisible(true);
-            jtables.add(table);
             view.add(table);
             view.validate();
         }
         initFrameComponents(view, scrollPane);
         initFrame();
+    }
+    
+    public void addBobTable(BobTable table) {
+        table.setOpaque(true);
+        table.setText(String.valueOf(table.getTableId()));
+        if(table.isAvailable())
+            table.setIcon(greenTableIcon);
+        else
+            table.setIcon(redTableIcon);
+        table.setSize(64, 64);
+        table.setBorder(BorderFactory.createLineBorder(Color.black));
+        table.addMouseListener(mouseHandler);
+        table.setHorizontalAlignment(JLabel.CENTER);
+        table.setHorizontalTextPosition(JLabel.CENTER);
+        table.setVerticalTextPosition(JLabel.TOP);
+        table.setVisible(true);
+        view.add(table);
+        view.validate();
+    }
+    
+    public void removeBobTable(BobTable table) {
+        Component c = null;
+        for(Component t : view.getComponents()) {
+            if(((BobTable) t).getTableId() == table.getTableId()) {
+                c = t;
+                break;
+            }
+        }
+        if(c != null)
+            view.remove(c);
+        view.validate();
+        view.updateUI();
     }
     
     private void initFrameComponents(JPanel view, JScrollPane scrollPane) {

@@ -28,5 +28,10 @@ public class BobTable extends JLabel {
         else
             this.setIcon(TablesFrame.redTableIcon);
     }
+    
+    @Override
+    public String toString() {
+        return "Τραπέζι " + tableId;
+    }
 
 }

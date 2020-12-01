@@ -1,5 +1,6 @@
 package gr.ihu.iee.bobross.controller;
 
+import gr.ihu.iee.bobross.gui.TablesFrame;
 import gr.ihu.iee.bobross.objects.BobItem;
 import gr.ihu.iee.bobross.objects.BobTable;
 import java.sql.Connection;
@@ -7,21 +8,26 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class DatabaseController {
     
     private static String driverClassName = "org.postgresql.Driver";
-    private static String url = "jdbc:postgresql://localhost:54322/it185233";
+    private static String url = "jdbc:postgresql://dblabs.it.teithe.gr:5432/it185233";
     private static String username = "it185233";
     private static String password = "it185233Alex";
     
     private Connection dbConnection;
     
-    public DatabaseController() {
+    private TablesFrame tFrame;
+    
+    public DatabaseController(TablesFrame tFrame) {
         try {
             Class.forName(driverClassName);
         } catch(ClassNotFoundException ex) {
@@ -34,15 +40,38 @@ public class DatabaseController {
             ex.printStackTrace();
             return;
         }
+        this.tFrame = tFrame;
     }
     
-    public BobTable getTrapezi(int id) {
-        String query = "SELECT getTrapezi(?)";
+    public TablesFrame getTablesFrame() { return this.tFrame; }
+    
+    public int putTrapezi(int receiptId) {
+        String query = "SELECT putTrapezi(?)";
+        PreparedStatement stmt = null;
+        int tid = 0;
+        try {
+            stmt = dbConnection.prepareStatement(query);
+            if(receiptId==0)
+                stmt.setNull(1, receiptId);
+            else
+                stmt.setInt(1, receiptId);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next())
+                tid = rs.getInt(1);
+            stmt.close();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+        return tid;
+    }
+    
+    public BobTable getTrapezi(int trapeziId) {
+        String query = "SELECT * FROM getTrapezi(?)";
         BobTable table = null;
         PreparedStatement stmt = null;
         try {
             stmt = dbConnection.prepareStatement(query);
-            stmt.setInt(1, id);
+            stmt.setInt(1, trapeziId);
             ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
                 int tid = rs.getInt("tid");
@@ -56,6 +85,24 @@ public class DatabaseController {
         }
         return null;
     }
+    
+    /* 
+    * TODO: Na valei h maria trigger sta drop gia na mhn mporei na ginei drop
+    *       ama to trapezi exei receiptId gia na mporei to function na
+    *       epistrefei boolean me ta exceptions
+    */
+    public void dropTrapezi(int trapeziId) {
+        String query = "SELECT dropTrapezi(?)";
+        PreparedStatement stmt = null;
+        try {
+            stmt = dbConnection.prepareStatement(query);
+            stmt.setInt(1, trapeziId);
+            stmt.executeQuery();
+            stmt.close();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+    } 
     
     public HashMap<Integer, Integer> getAllTrapezia() {
         String query = "SELECT * FROM trapezi";
@@ -116,11 +163,21 @@ public class DatabaseController {
         return null;
     }
     
-    public void insertItem(Map<String, String> item) {
-        String category = item.get("category");
-        double price = Double.parseDouble(item.get("price"));
-        String name = item.get("name");
-        int availability = 20; // TODO: Change this when GUI availability is implemented
+    public boolean insertItem(Map<String, Object> item) {
+        String category = (String) item.get("category");
+        NumberFormat f = NumberFormat.getInstance(Locale.getDefault());
+        Number number;
+        try {
+            String s = (String) item.get("price");
+            s = s.replace(',', '.');
+            number = f.parse(s);
+        }
+        catch(ParseException ex) {
+            return false;
+        }
+        double price = number.doubleValue();
+        String name = (String) item.get("name");
+        int availability = (int) item.get("availability");
         String query = "INSERT INTO katalogos(konoma, price, availability, category) VALUES (?, ?, ?, ?)";
         PreparedStatement stmt = null;
         try {
@@ -133,6 +190,7 @@ public class DatabaseController {
         } catch(SQLException ex) {
             ex.printStackTrace();
         }
+        return true;
     }
     
     public int getServitorosId(String onoma) {
@@ -152,6 +210,19 @@ public class DatabaseController {
             ex.printStackTrace();
         }
         return 0;
+    }
+    
+    public void putServitoros(String name) {
+        String query = "SELECT putServitoros(?)";
+        PreparedStatement stmt = null;
+        try {
+            stmt = dbConnection.prepareStatement(query);
+            stmt.setString(1, name);
+            ResultSet rs = stmt.executeQuery();
+            stmt.close();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
     }
     
     public String getServitorosName(int receiptId) {
@@ -276,8 +347,9 @@ public class DatabaseController {
             System.out.println("ERROR: Couldn't find proion " + geuma.getGeuma());
             return;
         }
+        int amount = geuma.getAmount();
         int availability = getMerides(katalogosId);
-        if(geuma.getAmount() - availability < 0 || availability == 0) {
+        if(amount > availability) {
             System.out.println("ERROR: Δεν υπάρχουν αρκετές μερίδες για το προϊόν " + geuma.getGeuma());
             if(availability == 0)
                 return;
