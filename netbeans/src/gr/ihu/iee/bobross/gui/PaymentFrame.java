@@ -38,6 +38,7 @@ public class PaymentFrame extends javax.swing.JFrame {
         }
         jTextField1.setText(String.valueOf(db.getLogariasmo(table)) + "€");
         jTextField2.setText(db.getServitorosName(table.getReceiptId()));
+        dateParaggelias.setText(db.getLogariasmoDate(table));
     }
 
     /**
@@ -52,13 +53,14 @@ public class PaymentFrame extends javax.swing.JFrame {
         tableName = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        dateParaggelias = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Payment");
         setLocation(new java.awt.Point(500, 250));
 
         tableName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -76,8 +78,8 @@ public class PaymentFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel2.setText("20/11/2020 18:29 ");
+        dateParaggelias.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        dateParaggelias.setText("20/11/2020 18:29 ");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -134,7 +136,7 @@ public class PaymentFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
+                                .addComponent(dateParaggelias)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
@@ -162,7 +164,7 @@ public class PaymentFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2))
+                        .addComponent(dateParaggelias))
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -178,8 +180,8 @@ public class PaymentFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel dateParaggelias;
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

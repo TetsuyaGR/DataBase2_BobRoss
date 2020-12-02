@@ -128,6 +128,7 @@ public class OrderFrame extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Order Menu");
         setLocation(new java.awt.Point(500, 250));
 
         TableNumber.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N

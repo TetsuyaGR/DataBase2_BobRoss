@@ -1,6 +1,7 @@
 package gr.ihu.iee.bobross.controller;
 
 import gr.ihu.iee.bobross.gui.TablesFrame;
+import gr.ihu.iee.bobross.objects.BobHmeras;
 import gr.ihu.iee.bobross.objects.BobItem;
 import gr.ihu.iee.bobross.objects.BobTable;
 import java.sql.Connection;
@@ -8,8 +9,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -282,13 +285,13 @@ public class DatabaseController {
     }
     
     public float getLogariasmo(BobTable table) {
-        int receiptId = table.getTableId();
+        int tableId = table.getTableId();
         String query = "SELECT getLogariasmo(?)";
         float logariasmos = 0.0f;
         PreparedStatement stmt = null;
         try {
             stmt = dbConnection.prepareStatement(query);
-            stmt.setInt(1, receiptId);
+            stmt.setInt(1, tableId);
             ResultSet rs = stmt.executeQuery();
             while(rs.next())
                 logariasmos = rs.getFloat(1);
@@ -298,6 +301,29 @@ public class DatabaseController {
             ex.printStackTrace();
         }
         return logariasmos;
+    }
+    
+    public String getLogariasmoDate(BobTable table) {
+        int receiptId = table.getReceiptId();
+        String query = "SELECT getLogariasmoDate(?)";
+        String dateTime = "";
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        PreparedStatement stmt = null;
+        try {
+            Timestamp date = null;
+            stmt = dbConnection.prepareStatement(query);
+            stmt.setInt(1, receiptId);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next())
+                date = rs.getTimestamp(1);
+            if(date != null)
+                dateTime = sdf.format(date);
+            stmt.close();
+            return dateTime;
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+        return dateTime;
     }
     
     public List<BobItem> getAllParaggelies(int receiptId) {
@@ -320,6 +346,28 @@ public class DatabaseController {
             ex.printStackTrace();
         }
         return null;
+    }
+    
+    public List<BobHmeras> getTameioHmeras() {
+        String query = "SELECT * FROM getTameioHmeras()";
+        PreparedStatement stmt = null;
+        List<BobHmeras> tameioHmeras = new ArrayList<>();
+        try {
+            int tid;
+            double logariasmos;
+            String servitoros;
+            stmt = dbConnection.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                tid = rs.getInt("tid");
+                logariasmos = rs.getDouble("logariasmos");
+                servitoros = rs.getString("onoma");
+                tameioHmeras.add(new BobHmeras(tid, logariasmos, servitoros));
+            }
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+        return tameioHmeras;
     }
     
     public int getMerides(int katalogosId) {

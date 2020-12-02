@@ -49,6 +49,7 @@ public class ServitorosFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Επιλογή σερβιτόρου");
 
         jButton3.setText("Okey");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -58,6 +59,11 @@ public class ServitorosFrame extends javax.swing.JFrame {
         });
 
         jButton4.setText("Cancer");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -110,6 +116,10 @@ public class ServitorosFrame extends javax.swing.JFrame {
         new OrderFrame(table, db).setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        dispose();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

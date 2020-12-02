@@ -10,6 +10,7 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
+    <Property name="title" type="java.lang.String" value="Management"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -392,13 +393,16 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jLabel5" max="32767" attributes="0"/>
-                          <Component id="jButton3" max="32767" attributes="0"/>
+                          <Component id="hmeromhnia" max="32767" attributes="0"/>
+                          <Component id="tameioHmerasButton" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="22" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane1" alignment="1" min="-2" pref="211" max="-2" attributes="0"/>
-                          <Component id="jTextField3" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="sunolikoTameio" min="-2" pref="61" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="jScrollPane1" pref="227" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -409,40 +413,35 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="jScrollPane1" min="-2" pref="167" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="jTextField3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="jLabel5" min="-2" pref="26" max="-2" attributes="0"/>
+                          <Component id="jScrollPane1" min="-2" pref="167" max="-2" attributes="0"/>
+                          <Component id="hmeromhnia" min="-2" pref="26" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jButton3" min="-2" pref="33" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="sunolikoTameio" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="13" max="32767" attributes="0"/>
+                      <Component id="tameioHmerasButton" min="-2" pref="33" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JButton" name="jButton3">
+            <Component class="javax.swing.JButton" name="tameioHmerasButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="&#x3a4;&#x3b1;&#x3bc;&#x3b5;&#x3af;&#x3bf; &#x3b7;&#x3bc;&#x3ad;&#x3c1;&#x3b1;&#x3c2;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tameioHmerasButtonActionPerformed"/>
+              </Events>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane1">
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JList" name="jList1">
+                <Component class="javax.swing.JList" name="tameioHmerasList">
                   <Properties>
-                    <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                      <StringArray count="5">
-                        <StringItem index="0" value="Item 1"/>
-                        <StringItem index="1" value="Item 2"/>
-                        <StringItem index="2" value="Item 3"/>
-                        <StringItem index="3" value="Item 4"/>
-                        <StringItem index="4" value="Item 5"/>
-                      </StringArray>
+                    <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="new DefaultListModel&lt;&gt;()" type="code"/>
                     </Property>
                   </Properties>
                   <AuxValues>
@@ -451,14 +450,14 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JLabel" name="jLabel5">
+            <Component class="javax.swing.JLabel" name="hmeromhnia">
               <Properties>
                 <Property name="text" type="java.lang.String" value="29/11/2020"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextField3">
+            <Component class="javax.swing.JTextField" name="sunolikoTameio">
               <Properties>
-                <Property name="text" type="java.lang.String" value="1089.20"/>
+                <Property name="editable" type="boolean" value="false"/>
               </Properties>
             </Component>
           </SubComponents>

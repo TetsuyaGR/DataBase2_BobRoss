@@ -6,8 +6,11 @@
 package gr.ihu.iee.bobross.gui;
 
 import gr.ihu.iee.bobross.controller.DatabaseController;
+import gr.ihu.iee.bobross.objects.BobHmeras;
 import gr.ihu.iee.bobross.objects.BobTable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +41,9 @@ public class AddItemFrame extends javax.swing.JFrame {
         centreWindow(this);
         this.tFrame = tFrame;
         arithmosTrapeziwn.setText(String.valueOf(jList2.getModel().getSize()));
+        
+        hmeromhnia.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+        
     }
 
     /**
@@ -75,15 +81,16 @@ public class AddItemFrame extends javax.swing.JFrame {
         cancelButton = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
+        tameioHmerasButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jLabel5 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        tameioHmerasList = new javax.swing.JList<>();
+        hmeromhnia = new javax.swing.JLabel();
+        sunolikoTameio = new javax.swing.JTextField();
 
         jToggleButton1.setText("jToggleButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Management");
 
         jList2.setModel(new DefaultListModel<String>());
         jScrollPane2.setViewportView(jList2);
@@ -286,18 +293,19 @@ public class AddItemFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Προσθήκη στον Κατάλογο", jPanel1);
 
-        jButton3.setText("Ταμείο ημέρας");
-
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        tameioHmerasButton.setText("Ταμείο ημέρας");
+        tameioHmerasButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tameioHmerasButtonActionPerformed(evt);
+            }
         });
-        jScrollPane1.setViewportView(jList1);
 
-        jLabel5.setText("29/11/2020");
+        tameioHmerasList.setModel(new DefaultListModel<>());
+        jScrollPane1.setViewportView(tameioHmerasList);
 
-        jTextField3.setText("1089.20");
+        hmeromhnia.setText("29/11/2020");
+
+        sunolikoTameio.setEditable(false);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -306,12 +314,14 @@ public class AddItemFrame extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                    .addComponent(hmeromhnia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tameioHmerasButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(sunolikoTameio, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -319,13 +329,12 @@ public class AddItemFrame extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(hmeromhnia, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(sunolikoTameio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addComponent(tameioHmerasButton, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -392,6 +401,7 @@ public class AddItemFrame extends javax.swing.JFrame {
             return;
         }
         db.dropTrapezi(trapeziId);
+        arithmosTrapeziwn.setText(String.valueOf(jList2.getModel().getSize()));
         tFrame.removeBobTable(table);
     }//GEN-LAST:event_removeTableButtonActionPerformed
 
@@ -402,6 +412,20 @@ public class AddItemFrame extends javax.swing.JFrame {
         db.putServitoros(name);
         infoBox("Ο Σερβιτόρος " + name + " καταχωρύθηκε.", getTitle());
     }//GEN-LAST:event_addServitorosButtonActionPerformed
+
+    private void tameioHmerasButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tameioHmerasButtonActionPerformed
+        DefaultListModel mod2 = (DefaultListModel) tameioHmerasList.getModel();
+        mod2.removeAllElements();
+        List<BobHmeras> tameioHmeras = db.getTameioHmeras();
+        if(tameioHmeras.isEmpty())
+            return;
+        double sunolo = 0.0d;
+        for(BobHmeras b : tameioHmeras) {
+            sunolo += b.getLogariasmos();
+            mod2.addElement(b);
+        }
+        sunolikoTameio.setText(Double.toString(sunolo) + "€");
+    }//GEN-LAST:event_tameioHmerasButtonActionPerformed
 
     private String[] getAllTrapezia() {
         Map<Integer, Integer> trapezia = db.getAllTrapezia();
@@ -418,18 +442,16 @@ public class AddItemFrame extends javax.swing.JFrame {
     private javax.swing.JSpinner availability;
     private javax.swing.JButton cancelButton;
     private javax.swing.JComboBox<String> categories;
+    private javax.swing.JLabel hmeromhnia;
     private javax.swing.JTextField itemName;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JList<String> jList2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -438,10 +460,12 @@ public class AddItemFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JTextField price;
     private javax.swing.JButton removeTableButton;
     private javax.swing.JTextField servitorosName;
+    private javax.swing.JTextField sunolikoTameio;
+    private javax.swing.JButton tameioHmerasButton;
+    private javax.swing.JList<String> tameioHmerasList;
     // End of variables declaration//GEN-END:variables
 }

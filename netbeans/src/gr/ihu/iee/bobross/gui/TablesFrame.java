@@ -145,7 +145,7 @@ public class TablesFrame extends JFrame {
         });
         JButton addButton = new JButton();
         addButton.setFont(buttonFont);
-        addButton.setText("Add");
+        addButton.setText("Admin");
         addButton.setPreferredSize(new Dimension(200, 30));
         addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
