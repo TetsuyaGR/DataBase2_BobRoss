@@ -3,6 +3,7 @@ package gr.ihu.iee.bobross.controller;
 import gr.ihu.iee.bobross.gui.TablesFrame;
 import gr.ihu.iee.bobross.objects.BobHmeras;
 import gr.ihu.iee.bobross.objects.BobItem;
+import gr.ihu.iee.bobross.objects.BobKatalogos;
 import gr.ihu.iee.bobross.objects.BobTable;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import static utils.Helpers.getFormattedPrice;
 
 public class DatabaseController {
     
@@ -127,6 +129,28 @@ public class DatabaseController {
         return null;
     }
     
+    public List<BobKatalogos> getAllGeumata() {
+        String query = "SELECT * FROM katalogos";
+        List<BobKatalogos> geumata = new ArrayList<>();
+        PreparedStatement stmt = null;
+        try {
+            stmt = dbConnection.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                int kid = rs.getInt("kid");
+                String onoma = rs.getString("konoma");
+                double price = rs.getDouble("price");
+                int availability = rs.getInt("availability");
+                String category = rs.getString("category");
+                geumata.add(new BobKatalogos(kid, onoma, price, availability, category));
+            }
+            stmt.close();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+        return geumata;
+    }
+    
     public List<String> getGeumata(String category) {
         String query = "SELECT * FROM getGeumata(?)";
         List<String> geumata = new ArrayList<>();
@@ -168,17 +192,7 @@ public class DatabaseController {
     
     public boolean insertItem(Map<String, Object> item) {
         String category = (String) item.get("category");
-        NumberFormat f = NumberFormat.getInstance(Locale.getDefault());
-        Number number;
-        try {
-            String s = (String) item.get("price");
-            s = s.replace(',', '.');
-            number = f.parse(s);
-        }
-        catch(ParseException ex) {
-            return false;
-        }
-        double price = number.doubleValue();
+        double price = getFormattedPrice((String) item.get("price"));
         String name = (String) item.get("name");
         int availability = (int) item.get("availability");
         String query = "INSERT INTO katalogos(konoma, price, availability, category) VALUES (?, ?, ?, ?)";
@@ -448,6 +462,22 @@ public class DatabaseController {
                 stmt.setNull(2, java.sql.Types.INTEGER);
             else
                 stmt.setInt(2, receiptId);
+            stmt.executeQuery();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public void updateKatalogos(BobKatalogos k1) {
+        String query = "SELECT updateKatalogos(?, ?, ?, ?, ?)";
+        PreparedStatement stmt = null;
+        try {
+            stmt = dbConnection.prepareCall(query);
+            stmt.setInt(1, k1.getKatalogosId());
+            stmt.setString(2, k1.getOnoma());
+            stmt.setDouble(3, k1.getPrice());
+            stmt.setInt(4, k1.getAvailability());
+            stmt.setString(5, k1.getCategory());
             stmt.executeQuery();
         } catch(SQLException ex) {
             ex.printStackTrace();
