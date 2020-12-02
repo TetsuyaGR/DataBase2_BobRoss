@@ -247,6 +247,16 @@ returns void as $$
   insert into katalogos(konoma, price, availability, category) values ($1, $2, $3, $4);
 $$ language sql;
 
+create or replace function updateKatalogos(int, varchar, float, int, varchar)
+returns void as $$
+  update katalogos set
+  konoma=$2,
+  price=$3,
+  availability=$4,
+  category=$5
+  where kid=$1;
+$$ language sql;
+
 -- Τραπέζια που σερβίρει ο σερβιτορος x
 
 create or replace function getTrapezia(int) returns 
@@ -474,4 +484,9 @@ $$ language sql;
 create or replace function dropTrapezi(int)
 returns void as $$
   delete from trapezi where tid=$1;
+$$ language sql;
+
+create or replace function getLogariasmoDate(int) returns timestamp as $$
+  select datetime FROM receipt r
+  WHERE r.rid=$1;
 $$ language sql;
