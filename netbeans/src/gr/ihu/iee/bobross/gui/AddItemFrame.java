@@ -9,6 +9,8 @@ import gr.ihu.iee.bobross.controller.DatabaseController;
 import gr.ihu.iee.bobross.objects.BobHmeras;
 import gr.ihu.iee.bobross.objects.BobKatalogos;
 import gr.ihu.iee.bobross.objects.BobTable;
+import java.awt.Component;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,9 +18,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
+import javax.swing.JTable;
 import javax.swing.ListModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import static utils.Helpers.centreWindow;
 import static utils.Helpers.getFormattedPrice;
@@ -29,10 +34,28 @@ import static utils.Helpers.infoBox;
  * @author Alex
  */
 public class AddItemFrame extends javax.swing.JFrame {
-
+    
+    private static final NumberFormat FORMAT = NumberFormat.getCurrencyInstance();
     private DatabaseController db;
     private TablesFrame tFrame;
     private BobKatalogos k1;
+    
+    private class CurrencyTableCellRenderer extends DefaultTableCellRenderer {
+        
+        @Override
+        public final Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int row, int column) {
+            final Component result = super.getTableCellRendererComponent(table, value,
+                    isSelected, hasFocus, row, column);
+            if (value instanceof Number) {
+                setHorizontalAlignment(JLabel.RIGHT);
+                setText(FORMAT.format(value));
+            } else {
+                setText("");
+            }
+            return result;
+        }
+    }
     
     /**
      * Creates new form AddItemFrame
@@ -42,6 +65,7 @@ public class AddItemFrame extends javax.swing.JFrame {
         TablesFrame tFrame = db.getTablesFrame();
         initComponents();
         jTable1.setAutoCreateRowSorter(true);
+        jTable1.getColumnModel().getColumn(2).setCellRenderer(new CurrencyTableCellRenderer());
         updateItemTable();
         jTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
             public void valueChanged(ListSelectionEvent event) {
@@ -378,13 +402,21 @@ public class AddItemFrame extends javax.swing.JFrame {
             new String [] {
                 "Κατηγορία", "Όνομα", "Τιμή", "Διαθεσημότητα"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Double.class, java.lang.Integer.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         jScrollPane3.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(1).setMinWidth(100);
             jTable1.getColumnModel().getColumn(1).setPreferredWidth(150);
             jTable1.getColumnModel().getColumn(1).setMaxWidth(200);
-            jTable1.getColumnModel().getColumn(2).setMaxWidth(50);
+            jTable1.getColumnModel().getColumn(2).setMaxWidth(60);
         }
 
         modifyButton.setText("Modify");
@@ -501,7 +533,7 @@ public class AddItemFrame extends javax.swing.JFrame {
             itemTable.addRow(new Object[4]);
             itemTable.setValueAt(k.getCategory(), i, 0);
             itemTable.setValueAt(k, i, 1);
-            itemTable.setValueAt(k.getPrice() + "€", i, 2);
+            itemTable.setValueAt(k.getPrice(), i, 2);
             itemTable.setValueAt(k.getAvailability(), i, 3);
             i++;
         }

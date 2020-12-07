@@ -9,8 +9,9 @@ import gr.ihu.iee.bobross.controller.DatabaseController;
 import gr.ihu.iee.bobross.objects.BobItem;
 import javax.swing.DefaultListModel;
 import gr.ihu.iee.bobross.objects.BobTable;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
+import javax.swing.SpinnerNumberModel;
 /**
  *
  * @author alexm
@@ -19,19 +20,19 @@ public class OrderFrame extends javax.swing.JFrame {
 
     private DatabaseController db;
     private BobTable table;
-    
+    private List<String> orderCache;
     /**
      * Creates new form OrderFrame
      */
     public OrderFrame(BobTable table, DatabaseController db) {
-        initComponents();
-        
         if(table == null)
             return; 
         if(db == null)
             return;
         this.db = db;
         this.table = table;
+        orderCache = new ArrayList<>();
+        initComponents();
         TableNumber.setText("Table " + String.valueOf(table.getTableId()));
     }
     
@@ -92,7 +93,6 @@ public class OrderFrame extends javax.swing.JFrame {
         });
 
         jSpinner1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(1, 1, 99, 1));
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -105,7 +105,7 @@ public class OrderFrame extends javax.swing.JFrame {
                         .addComponent(Fagito, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jFrame1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(OkeyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -295,73 +295,56 @@ public class OrderFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     DefaultListModel mod = new DefaultListModel();
     DefaultListModel mod2 = new DefaultListModel();
-    private void KiriosButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KiriosButtonActionPerformed
-        
-        KatigoriaFagitouLabel.setText("Κυρίως πιάτα");
+    private void generateFoodList() {
         KatalogosList.setModel(mod);
         mod.removeAllElements();
         List<String> geumata = db.getGeumata(KatigoriaFagitouLabel.getText());
         for(String s : geumata)
-            mod.addElement(s);
+            if(orderCache.contains(s) == false)
+                mod.addElement(s);
+    }
+    private void KiriosButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KiriosButtonActionPerformed
+        KatigoriaFagitouLabel.setText("Κυρίως πιάτα");
+        generateFoodList();
     }//GEN-LAST:event_KiriosButtonActionPerformed
 
     private void OrektikoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OrektikoButtonActionPerformed
         KatigoriaFagitouLabel.setText("Ορεκτικά");
-        KatalogosList.setModel(mod);
-        mod.removeAllElements();
-        List<String> geumata = db.getGeumata(KatigoriaFagitouLabel.getText());
-        for(String s : geumata)
-            mod.addElement(s);
+        generateFoodList();
     }//GEN-LAST:event_OrektikoButtonActionPerformed
     
     private void EpidorpioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EpidorpioButtonActionPerformed
         KatigoriaFagitouLabel.setText("Επιδόρπια"); 
-        KatalogosList.setModel(mod);
-        mod.removeAllElements();
-        List<String> geumata = db.getGeumata(KatigoriaFagitouLabel.getText());
-        for(String s : geumata)
-            mod.addElement(s);
+        generateFoodList();
     }//GEN-LAST:event_EpidorpioButtonActionPerformed
 
     private void MpiraButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MpiraButtonActionPerformed
         KatigoriaFagitouLabel.setText("Μπύρες");
-        KatalogosList.setModel(mod);
-        mod.removeAllElements();
-        List<String> geumata = db.getGeumata(KatigoriaFagitouLabel.getText());
-        for(String s : geumata)
-            mod.addElement(s);
+        generateFoodList();
     }//GEN-LAST:event_MpiraButtonActionPerformed
 
     private void SalataButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalataButtonActionPerformed
         KatigoriaFagitouLabel.setText("Σαλάτες");
-        KatalogosList.setModel(mod);
-        mod.removeAllElements();
-        List<String> geumata = db.getGeumata(KatigoriaFagitouLabel.getText());
-        for(String s : geumata)
-            mod.addElement(s);
+        generateFoodList();
     }//GEN-LAST:event_SalataButtonActionPerformed
 
     private void AnapsiktikoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnapsiktikoButtonActionPerformed
         KatigoriaFagitouLabel.setText("Αναψυκτικά");
-        KatalogosList.setModel(mod);
-        mod.removeAllElements();
-        List<String> geumata = db.getGeumata(KatigoriaFagitouLabel.getText());
-        for(String s : geumata)
-            mod.addElement(s);
+        generateFoodList();
     }//GEN-LAST:event_AnapsiktikoButtonActionPerformed
 
     private void KrasiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KrasiButtonActionPerformed
         KatigoriaFagitouLabel.setText("Κρασιά");
-        KatalogosList.setModel(mod);
-        mod.removeAllElements();
-        List<String> geumata = db.getGeumata(KatigoriaFagitouLabel.getText());
-        for(String s : geumata)
-            mod.addElement(s);
+        generateFoodList();
     }//GEN-LAST:event_KrasiButtonActionPerformed
 
     private void AddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddButtonActionPerformed
+        String food = KatalogosList.getSelectedValue();
+        if(orderCache.contains(food))
+            return;
         jFrame1.show();
-        Fagito.setText(KatalogosList.getSelectedValue());
+        Fagito.setText(food);
+        jSpinner1.setModel(createSpinnerModel());
         
     }//GEN-LAST:event_AddButtonActionPerformed
 
@@ -370,6 +353,7 @@ public class OrderFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_CancelButtonActionPerformed
 
     private void OkeyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkeyButtonActionPerformed
+        orderCache.add(Fagito.getText());
         jFrame1.dispose();
         jList1.setModel(mod2);
         mod2.addElement(new BobItem(KatalogosList.getSelectedValue(), (int) jSpinner1.getValue(), table.getReceiptId()));
@@ -377,11 +361,12 @@ public class OrderFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_OkeyButtonActionPerformed
 
     private void RemoveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoveButtonActionPerformed
-        DefaultListModel model = (DefaultListModel) jList1.getModel();
         int removeIndex = jList1.getSelectedIndex();
         if(removeIndex == -1)
             return;
-        model.remove(removeIndex);
+        String food = mod2.getElementAt(removeIndex).toString();
+        orderCache.remove(food);
+        mod2.remove(removeIndex);
     }//GEN-LAST:event_RemoveButtonActionPerformed
 
     private void NextOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextOrderActionPerformed
@@ -394,6 +379,21 @@ public class OrderFrame extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_NextOrderActionPerformed
 
+    private SpinnerNumberModel createSpinnerModel() {
+        int availability = db.getAvailability(KatalogosList.getSelectedValue());
+        int initial = 0;
+        int minimum = 0;
+        int step = 0;
+        if(availability == 0) {
+            OkeyButton.setEnabled(false);
+        } else {
+            initial = 1;
+            minimum = 1;
+            step = 1;
+        }
+        return new SpinnerNumberModel(initial, minimum, availability, step);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddButton;
     private javax.swing.JButton AnapsiktikoButton;

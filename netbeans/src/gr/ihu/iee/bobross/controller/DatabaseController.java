@@ -24,7 +24,7 @@ import static utils.Helpers.getFormattedPrice;
 public class DatabaseController {
     
     private static String driverClassName = "org.postgresql.Driver";
-    private static String url = "jdbc:postgresql://dblabs.it.teithe.gr:5432/it185233";
+    private static String url = "jdbc:postgresql://localhost:54322/it185233";
     private static String username = "it185233";
     private static String password = "it185233Alex";
     
@@ -210,6 +210,24 @@ public class DatabaseController {
         return true;
     }
     
+    public int getAvailability(String itemName) {
+        String query = "SELECT getAvailability(?)";
+        int availability = 0;
+        PreparedStatement stmt = null;
+        try {
+            stmt = dbConnection.prepareStatement(query);
+            stmt.setString(1, itemName);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                availability = rs.getInt(1);
+            }
+            stmt.close();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+        return availability;
+    }
+    
     public int getServitorosId(String onoma) {
         String query = "SELECT getServitoros(?)";
         int servitorosId = 0;
@@ -222,11 +240,10 @@ public class DatabaseController {
                 servitorosId = rs.getInt(1);
             }
             stmt.close();
-            return servitorosId;
         } catch(SQLException ex) {
             ex.printStackTrace();
         }
-        return 0;
+        return servitorosId;
     }
     
     public void putServitoros(String name) {

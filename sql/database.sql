@@ -490,3 +490,9 @@ create or replace function getLogariasmoDate(int) returns timestamp as $$
   select datetime FROM receipt r
   WHERE r.rid=$1;
 $$ language sql;
+
+create or replace function getAvailability(varchar)
+returns int as $$
+  select availability from katalogos
+  where konoma=$1;
+$$ language sql;
