@@ -24,7 +24,7 @@ import static utils.Helpers.getFormattedPrice;
 public class DatabaseController {
     
     private static String driverClassName = "org.postgresql.Driver";
-    private static String url = "jdbc:postgresql://localhost:54322/it185233";
+    private static String url = "jdbc:postgresql://dblabs.it.teithe.gr:5432/it185233";
     private static String username = "it185233";
     private static String password = "it185233Alex";
     
@@ -378,22 +378,44 @@ public class DatabaseController {
         }
         return null;
     }
+    public List<String> getLogFile(){
+        String query = "SELECT * FROM getLogFile()";
+        PreparedStatement stmt = null;
+        List<String> logFile = new ArrayList<>();
+        try {
+            String table_name;
+            String operation; 
+            String date;
+            String userid;
+            
+            stmt = dbConnection.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                table_name = rs.getString("table_name");
+                operation = rs.getString("operation");
+                date = rs.getTimestamp("stamp").toString();
+                userid = rs.getString("userid");
+                logFile.add(table_name +" "+ operation +" "+ date +" "+ userid);
+            }
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+        return logFile;
+    }
     
     public List<BobHmeras> getTameioHmeras() {
         String query = "SELECT * FROM getTameioHmeras()";
         PreparedStatement stmt = null;
         List<BobHmeras> tameioHmeras = new ArrayList<>();
         try {
-            int tid;
             double logariasmos;
             String servitoros;
             stmt = dbConnection.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
-                tid = rs.getInt("tid");
                 logariasmos = rs.getDouble("logariasmos");
                 servitoros = rs.getString("onoma");
-                tameioHmeras.add(new BobHmeras(tid, logariasmos, servitoros));
+                tameioHmeras.add(new BobHmeras(logariasmos, servitoros));
             }
         } catch(SQLException ex) {
             ex.printStackTrace();
@@ -495,6 +517,18 @@ public class DatabaseController {
             stmt.setDouble(3, k1.getPrice());
             stmt.setInt(4, k1.getAvailability());
             stmt.setString(5, k1.getCategory());
+            stmt.executeQuery();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public void dropKatalogos(BobKatalogos k1) {
+        String query = "SELECT dropKatalogos(?)";
+        PreparedStatement stmt = null;
+        try {
+            stmt = dbConnection.prepareCall(query);
+            stmt.setInt(1, k1.getKatalogosId());
             stmt.executeQuery();
         } catch(SQLException ex) {
             ex.printStackTrace();

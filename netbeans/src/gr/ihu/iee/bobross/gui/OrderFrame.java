@@ -190,6 +190,7 @@ public class OrderFrame extends javax.swing.JFrame {
             }
         });
 
+        KatalogosList.setModel(mod);
         KatalogosList.setToolTipText("");
         jScrollPane2.setViewportView(KatalogosList);
 
@@ -199,6 +200,7 @@ public class OrderFrame extends javax.swing.JFrame {
         KatigoriaFagitouLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         KatigoriaFagitouLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
+        jList1.setModel(mod2);
         jScrollPane1.setViewportView(jList1);
 
         AddButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -340,6 +342,8 @@ public class OrderFrame extends javax.swing.JFrame {
 
     private void AddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddButtonActionPerformed
         String food = KatalogosList.getSelectedValue();
+        if(food == null)
+            return;
         if(orderCache.contains(food))
             return;
         jFrame1.show();

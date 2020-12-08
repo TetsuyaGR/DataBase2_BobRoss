@@ -145,12 +145,20 @@ public class AddItemFrame extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         selectedItemAvailability = new javax.swing.JSpinner();
         jPanel6 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        logFileList = new javax.swing.JList<>();
 
         jToggleButton1.setText("jToggleButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Management");
         setMinimumSize(new java.awt.Dimension(634, 330));
+
+        jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabbedPane1StateChanged(evt);
+            }
+        });
 
         jList2.setModel(new DefaultListModel<String>());
         jScrollPane2.setViewportView(jList2);
@@ -427,6 +435,11 @@ public class AddItemFrame extends javax.swing.JFrame {
         });
 
         deleteButton.setText("Delete");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
 
         categoryList.setModel(new javax.swing.DefaultComboBoxModel<>(db.getCategories()));
 
@@ -497,15 +510,25 @@ public class AddItemFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Επεξεργασία Καταλόγου", jPanel5);
 
+        logFileList.setModel(new DefaultListModel());
+        logFileList.setToolTipText("");
+        jScrollPane4.setViewportView(logFileList);
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 790, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 770, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 339, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Log File", jPanel6);
@@ -545,8 +568,10 @@ public class AddItemFrame extends javax.swing.JFrame {
         item.put("name", itemName.getText());
         item.put("price", price.getText());
         item.put("availability", availability.getValue());
-        if(db.insertItem(item))
+        if(db.insertItem(item)) {
+            updateItemTable();
             infoBox("Το προϊόν καταχωρήθηκε", getTitle());
+        }
         else
             infoBox("Η τιμή του προϊόντος δεν είναι έγκυρη!", getTitle());
         itemName.setText("");
@@ -624,6 +649,25 @@ public class AddItemFrame extends javax.swing.JFrame {
         infoBox("Το αντικείμενο ενημερώθηκε επιτυχώς!", getTitle());
     }//GEN-LAST:event_modifyButtonActionPerformed
 
+    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
+        if(jTabbedPane1.getTitleAt(jTabbedPane1.getSelectedIndex()).equals("Log File")) {
+            List<String> logFile = db.getLogFile();
+            DefaultListModel mod =(DefaultListModel) logFileList.getModel();
+            mod.removeAllElements();
+            for(int i=0 ; i<logFile.size() ; i++){
+                mod.addElement(logFile.get(i));
+            }
+        }   
+    }//GEN-LAST:event_jTabbedPane1StateChanged
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        if(k1 == null)
+            return;
+        db.dropKatalogos(k1);
+        updateItemTable();
+        infoBox("Το αντικείμενο διαγράφηκε επιτυχώς!", getTitle());
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
     private String[] getAllTrapezia() {
         Map<Integer, Integer> trapezia = db.getAllTrapezia();
         List<String> trapeziaList = new ArrayList<>();
@@ -665,9 +709,11 @@ public class AddItemFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JList<String> logFileList;
     private javax.swing.JButton modifyButton;
     private javax.swing.JTextField price;
     private javax.swing.JButton removeTableButton;

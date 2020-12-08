@@ -11,12 +11,10 @@ package gr.ihu.iee.bobross.objects;
  */
 public class BobHmeras {
     
-    private int tid;
     private double logariasmos;
     private String servitoros;
 
-    public BobHmeras(int tid, double logariasmos, String servitoros) {
-        this.tid = tid;
+    public BobHmeras(double logariasmos, String servitoros) {
         this.logariasmos = logariasmos;
         this.servitoros = servitoros;
     }
@@ -27,7 +25,7 @@ public class BobHmeras {
     
     @Override
     public String toString() {
-        return "Τραπέζι " + tid + " Λογαριασμός: " + logariasmos + " Σερβιτόρος: " + servitoros;
+        return "Σερβιτόρος: " + servitoros + " Λογαριασμός: " + logariasmos + "€";
     }
     
 }
