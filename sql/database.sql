@@ -341,18 +341,17 @@ setof varchar as $$
 
 -- Ταμειο ημερας
 
-DROP TYPE IF EXISTS tameiohmeras;
+DROP TYPE IF EXISTS tameiohmeras CASCADE;
 
-CREATE TYPE tameiohmeras AS (tid INT, logariasmos float, onoma TEXT);
+CREATE TYPE tameiohmeras AS (logariasmos float, onoma TEXT);
 
 create or replace function getTameioHmeras() returns setof tameiohmeras as $$
-    select tid,sum(k.price*p.amount),s.onoma from trapezi t
-    join paraggelia p on p.receiptid = t.receiptid
+    select sum(k.price*p.amount),s.onoma from receipt r
+    join paraggelia p on p.receiptid = r.rid
     join katalogos k on k.kid = p.katalogosid
-    join receipt r on r.rid = t.receiptid
     join servitoros s on r.servitorosid = s.sid
-    where r.datetime >= current_date and r.datetime < current_date + interval '1 day'
-    group by t.tid, s.onoma;
+    where r.datetime >= current_date
+    group by s.onoma;
 $$ language sql;
 
 -- Ποσες μεριδες εχουν μεινει απο το x φαγητο
@@ -495,4 +494,14 @@ create or replace function getAvailability(varchar)
 returns int as $$
   select availability from katalogos
   where konoma=$1;
+$$ language sql;
+
+CREATE OR REPLACE FUNCTION getLogFile()
+returns setof log_File as $$
+select * from log_File;
+$$ language sql;
+
+create or replace function dropKatalogos(int)
+returns void as $$
+  delete from katalogos where kid=$1;
 $$ language sql;
