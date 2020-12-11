@@ -20,7 +20,6 @@ import java.util.Map;
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.ListModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -568,7 +567,7 @@ public class AddItemFrame extends javax.swing.JFrame {
         item.put("name", itemName.getText());
         item.put("price", price.getText());
         item.put("availability", availability.getValue());
-        if(db.insertItem(item)) {
+        if(db.putKatalogos(item)) {
             updateItemTable();
             infoBox("Το προϊόν καταχωρήθηκε", getTitle());
         }

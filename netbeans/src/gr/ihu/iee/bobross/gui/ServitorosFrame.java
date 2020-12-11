@@ -106,7 +106,7 @@ public class ServitorosFrame extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         String onoma = (String) jComboBox2.getSelectedItem();
-        int receiptId = db.insertReceipt(onoma);
+        int receiptId = db.putReceipt(onoma);
         if(receiptId == 0) {
             System.out.println("ERROR: Couldn't create receiptId with servitoros " + onoma);
             return;

@@ -378,7 +378,7 @@ public class OrderFrame extends javax.swing.JFrame {
         int size = model.getSize();
         for(int i = 0;i < size;i++) {
             BobItem geuma = (BobItem) model.get(i);
-            db.insertParaggelia(geuma);
+            db.putParaggelia(geuma);
         }
         this.dispose();
     }//GEN-LAST:event_NextOrderActionPerformed

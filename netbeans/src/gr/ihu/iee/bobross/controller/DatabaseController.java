@@ -91,11 +91,6 @@ public class DatabaseController {
         return null;
     }
     
-    /* 
-    * TODO: Na valei h maria trigger sta drop gia na mhn mporei na ginei drop
-    *       ama to trapezi exei receiptId gia na mporei to function na
-    *       epistrefei boolean me ta exceptions
-    */
     public void dropTrapezi(int trapeziId) {
         String query = "SELECT dropTrapezi(?)";
         PreparedStatement stmt = null;
@@ -110,7 +105,7 @@ public class DatabaseController {
     } 
     
     public HashMap<Integer, Integer> getAllTrapezia() {
-        String query = "SELECT * FROM trapezi";
+        String query = "SELECT * FROM getAllTrapezia()";
         HashMap<Integer, Integer> table = new HashMap<>();
         PreparedStatement stmt = null;
         try {
@@ -130,7 +125,7 @@ public class DatabaseController {
     }
     
     public List<BobKatalogos> getAllGeumata() {
-        String query = "SELECT * FROM katalogos";
+        String query = "SELECT * FROM getAllGeumata()";
         List<BobKatalogos> geumata = new ArrayList<>();
         PreparedStatement stmt = null;
         try {
@@ -172,7 +167,7 @@ public class DatabaseController {
     }
     
     public String[] getCategories() {
-        String query = "SELECT DISTINCT category FROM katalogos";
+        String query = "SELECT getCategories()";
         List<String> categories = new ArrayList<>();
         PreparedStatement stmt = null;
         try {
@@ -190,20 +185,20 @@ public class DatabaseController {
         return null;
     }
     
-    public boolean insertItem(Map<String, Object> item) {
+    public boolean putKatalogos(Map<String, Object> item) {
         String category = (String) item.get("category");
         double price = getFormattedPrice((String) item.get("price"));
         String name = (String) item.get("name");
         int availability = (int) item.get("availability");
-        String query = "INSERT INTO katalogos(konoma, price, availability, category) VALUES (?, ?, ?, ?)";
+        String query = "SELECT putKatalogos(?, ?, ?, ?)";
         PreparedStatement stmt = null;
         try {
-            stmt = dbConnection.prepareCall(query);
+            stmt = dbConnection.prepareStatement(query);
             stmt.setString(1, name);
             stmt.setDouble(2, price);
             stmt.setInt(3, availability);
             stmt.setString(4, category);
-            stmt.executeUpdate();
+            stmt.executeQuery();
         } catch(SQLException ex) {
             ex.printStackTrace();
         }
@@ -442,7 +437,7 @@ public class DatabaseController {
         return 0;
     }
     
-    public void insertParaggelia(BobItem geuma) {
+    public void putParaggelia(BobItem geuma) {
         int katalogosId = getKatalogosId(geuma.getGeuma());
         if(katalogosId == 0) {
             System.out.println("ERROR: Couldn't find proion " + geuma.getGeuma());
@@ -470,7 +465,7 @@ public class DatabaseController {
         }
     }
     
-    public int insertReceipt(String servitoros) {
+    public int putReceipt(String servitoros) {
         int servitorosId = getServitorosId(servitoros);
         if(servitorosId == 0) {
             System.out.println("ERROR: Couldn't find servitoros " + servitoros);
