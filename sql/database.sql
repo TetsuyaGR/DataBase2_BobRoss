@@ -461,6 +461,21 @@ returns void as $$
   update trapezi set receiptid=$2 where tid=$1;
 $$ language sql;
 
+create or replace function getCategories()
+returns setof varchar as $$
+  SELECT DISTINCT category FROM katalogos;
+$$ language sql;
+
+create or replace function getAllTrapezia()
+returns setof trapezi as $$
+  SELECT * FROM trapezi;
+$$ language sql;
+
+create or replace function getAllKatalogos()
+returns setof katalogos as $$
+  SELECT * FROM katalogos;
+$$ language sql;
+
 create or replace function getAllServitorous() returns 
 setof servitoros as $$
   select * from servitoros;
