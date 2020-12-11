@@ -471,7 +471,7 @@ returns setof trapezi as $$
   SELECT * FROM trapezi;
 $$ language sql;
 
-create or replace function getAllKatalogos()
+create or replace function getAllGeumata()
 returns setof katalogos as $$
   SELECT * FROM katalogos;
 $$ language sql;
