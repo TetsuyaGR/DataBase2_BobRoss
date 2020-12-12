@@ -233,8 +233,8 @@ returns void as $$
 $$ language sql;
 
 create or replace function putReceipt(int)
-returns void as $$
-  insert into receipt(dateTime, servitorosID) values (NOW(), $1);
+returns int as $$
+  insert into receipt(dateTime, servitorosID) values (NOW(), $1) returning receiptid;
 $$ language sql;
 
 create or replace function putServitoros(varchar)
