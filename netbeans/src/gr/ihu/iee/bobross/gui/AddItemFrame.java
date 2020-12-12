@@ -602,13 +602,14 @@ public class AddItemFrame extends javax.swing.JFrame {
             infoBox("Μα καλα κυριε, εισαστε με τα καλα σας?1?1!!?1!1?", getTitle());
             return;
         }
-        String tableString = (String) mod.remove(idx);
+        String tableString = (String) mod.get(idx);
         int trapeziId = Integer.parseInt(tableString.replaceAll("\\D+", ""));
         BobTable table = db.getTrapezi(trapeziId);
         if(table.isAvailable() == false) {
             infoBox("Μα καλα, άνθρωποι κάθονται στο τραπέζι και εσύ θα πας να το πάρεις?", getTitle());
             return;
         }
+        mod.remove(idx);
         db.dropTrapezi(trapeziId);
         arithmosTrapeziwn.setText(String.valueOf(jList2.getModel().getSize()));
         tFrame.removeBobTable(table);

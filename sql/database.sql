@@ -58,7 +58,7 @@ CREATE TABLE receipt (
                                                                  
 CREATE TABLE paraggelia(
   pid serial,
-  katalogosID integer not null constraint f_key1 references katalogos(kid) ,
+  katalogosID integer not null constraint f_key1 references katalogos(kid) on delete cascade ,
   amount INT,
   receiptID INT not null constraint f_key2 references receipt(rid),
   sxolio varchar(100),
@@ -234,7 +234,7 @@ $$ language sql;
 
 create or replace function putReceipt(int)
 returns int as $$
-  insert into receipt(dateTime, servitorosID) values (NOW(), $1) returning receiptid;
+  insert into receipt(dateTime, servitorosID) values (NOW(), $1) returning rid;
 $$ language sql;
 
 create or replace function putServitoros(varchar)
@@ -518,5 +518,5 @@ $$ language sql;
 
 create or replace function dropKatalogos(int)
 returns void as $$
-  delete from katalogos where kid=$1;
+  delete from katalogos where kid=$1 CASCADE;
 $$ language sql;

@@ -135,7 +135,7 @@ public class OrderFrame extends javax.swing.JFrame {
         TableNumber.setText("table 1");
 
         KiriosButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        KiriosButton.setText("Κυρίος");
+        KiriosButton.setText("Κυρίως");
         KiriosButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 KiriosButtonActionPerformed(evt);
