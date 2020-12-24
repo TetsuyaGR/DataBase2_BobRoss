@@ -33,78 +33,78 @@ CREATE FUNCTION createdb()
 returns void as 
 $$
 
-CREATE TABLE katalogos(
-  kid SERIAL,
-  konoma VARCHAR(100),
-  price float constraint c_price check (price>0),
-  availability INT constraint c_availability check (availability=0 or availability>0),
-  category VARCHAR(50),
-  constraint c_kid PRIMARY KEY(kid)
-);
-
- CREATE TABLE servitoros (
-  sid serial,
-  onoma VARCHAR(50),
-  constraint c_sid PRIMARY KEY(sid)
-);                                                                
-                                                                 
-CREATE TABLE receipt (
-  rid serial,
-  dateTime TIMESTAMP,
-  servitorosID INT not null constraint f_key3 references servitoros(sid),
-  constraint c_rid primary key(rid)
-);                                                                
-                                                                 
-                                                                 
-CREATE TABLE paraggelia(
-  pid serial,
-  katalogosID integer not null constraint f_key1 references katalogos(kid) on delete cascade ,
-  amount INT,
-  receiptID INT not null constraint f_key2 references receipt(rid),
-  sxolio varchar(100),
-  constraint c_pid primary key(pid)	
-);
-                                                                 
-                                                                 
-CREATE TABLE trapezi (
-  tid serial,
-  receiptID INT constraint f_key references receipt(rid),
-  constraint c_tid primary key(tid)	
+  CREATE TABLE katalogos(
+    kid SERIAL,
+    konoma VARCHAR(100),
+    price float constraint c_price check (price>0),
+    availability INT constraint c_availability check (availability=0 or availability>0),
+    category VARCHAR(50),
+    constraint c_kid PRIMARY KEY(kid)
   );
 
+   CREATE TABLE servitoros (
+    sid serial,
+    onoma VARCHAR(50),
+    constraint c_sid PRIMARY KEY(sid)
+  );                                                                
 
-create table log_file(
-table_name text not null,
-operation char(1) NOT NULL,
-stamp timestamp NOT NULL,
-userid varchar(20) NOT NULL
-);
+  CREATE TABLE receipt (
+    rid serial,
+    dateTime TIMESTAMP,
+    servitorosID INT not null constraint f_key3 references servitoros(sid),
+    constraint c_rid primary key(rid)
+  );                                                                
 
--- creating triggers
-CREATE TRIGGER log_file
-AFTER INSERT OR UPDATE OR DELETE ON katalogos
-FOR EACH ROW EXECUTE PROCEDURE process_log_file();
 
-CREATE TRIGGER log_file
-AFTER INSERT OR UPDATE OR DELETE ON servitoros
-FOR EACH ROW EXECUTE PROCEDURE process_log_file();
+  CREATE TABLE paraggelia(
+    pid serial,
+    katalogosID integer not null constraint f_key1 references katalogos(kid) on delete cascade ,
+    amount INT,
+    receiptID INT not null constraint f_key2 references receipt(rid),
+    sxolio varchar(100),
+    constraint c_pid primary key(pid)	
+  );
+                                                                   
+                                                                   
+  CREATE TABLE trapezi (
+    tid serial,
+    receiptID INT constraint f_key references receipt(rid),
+    constraint c_tid primary key(tid)	
+    );
 
-CREATE TRIGGER log_file
-AFTER INSERT OR UPDATE OR DELETE ON receipt
-FOR EACH ROW EXECUTE PROCEDURE process_log_file();
 
-CREATE TRIGGER log_file
-AFTER INSERT OR UPDATE OR DELETE ON paraggelia
-FOR EACH ROW EXECUTE PROCEDURE process_log_file();
+  create table log_file(
+  table_name text not null,
+  operation char(1) NOT NULL,
+  stamp timestamp NOT NULL,
+  userid varchar(20) NOT NULL
+  );
 
-CREATE TRIGGER log_file
-AFTER INSERT OR UPDATE OR DELETE ON trapezi
-FOR EACH ROW EXECUTE PROCEDURE process_log_file();
+  -- creating triggers
+  CREATE TRIGGER log_file
+  AFTER INSERT OR UPDATE OR DELETE ON katalogos
+  FOR EACH ROW EXECUTE PROCEDURE process_log_file();
 
-create trigger updateamounttrigger
-after insert on paraggelia 
-for each row 
-execute procedure updateamount();
+  CREATE TRIGGER log_file
+  AFTER INSERT OR UPDATE OR DELETE ON servitoros
+  FOR EACH ROW EXECUTE PROCEDURE process_log_file();
+
+  CREATE TRIGGER log_file
+  AFTER INSERT OR UPDATE OR DELETE ON receipt
+  FOR EACH ROW EXECUTE PROCEDURE process_log_file();
+
+  CREATE TRIGGER log_file
+  AFTER INSERT OR UPDATE OR DELETE ON paraggelia
+  FOR EACH ROW EXECUTE PROCEDURE process_log_file();
+
+  CREATE TRIGGER log_file
+  AFTER INSERT OR UPDATE OR DELETE ON trapezi
+  FOR EACH ROW EXECUTE PROCEDURE process_log_file();
+
+  create trigger updateamounttrigger
+  after insert on paraggelia 
+  for each row 
+  execute procedure updateamount();
 $$ LANGUAGE SQL;
 
 --Καθε φορα που περναμε μια παραγγελια, θα μειωνει τη διαθεσημοτητα του προιόντος
@@ -417,7 +417,7 @@ select putKatalogos('Heineken', 1.50, 500, 'Μπύρες');
 
 select putKatalogos('Coca-Cola', 1.40, 500, 'Αναψυκτικά');
 select putKatalogos('Sprite', 1.40, 500, 'Αναψυκτικά');
-select putKatalogos('Fanta', 1.40, 500, 'Αναψυκτικά');
+select putKatalogos('Fanta', 1.40, 3, 'Αναψυκτικά');
 select putKatalogos('Νερό εμφιαλωμένο ΖΑΓΟΡΙ (1l)', 2.00, 500, 'Αναψυκτικά');
 
 select putKatalogos('Κόκκινο Ημίγλυκο', 2.00, 500, 'Κρασιά');
