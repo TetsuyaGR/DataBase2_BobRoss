@@ -24,9 +24,9 @@ import static utils.Helpers.getFormattedPrice;
 public class DatabaseController {
     
     private static String driverClassName = "org.postgresql.Driver";
-    private static String url = "jdbc:postgresql://localhost:54322/it185233";
-    private static String username = "it185233";
-    private static String password = "it185233Alex";
+    private static String url = "jdbc:postgresql://localhost:54322/restaurant_db";
+    private static String username = "root";
+    private static String password = "";
     
     private Connection dbConnection;
     
